@@ -9,4 +9,8 @@ class State extends Model
 {
     use SoftDeletes;
     protected $fillable = ['name'];
+
+    public function tasks() {
+        return $this->belongsTo('App/Task');
+    }
 }
