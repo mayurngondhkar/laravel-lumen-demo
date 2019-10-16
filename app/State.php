@@ -11,6 +11,6 @@ class State extends Model
     protected $fillable = ['name'];
 
     public function tasks() {
-        return $this->belongsTo('App/Task');
+        return $this->belongsTo(Task::class);
     }
 }

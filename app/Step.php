@@ -11,10 +11,10 @@ class Step extends Model
     protected $fillable = ['name', 'description', 'todolist_id', 'order_in_todolist'];
 
     public function todolist() {
-        return $this->belongsTo('App/Todolist');
+        return $this->belongsTo(Todolist::class);
     }
 
     public function tasks() {
-        return $this->hasMany('App/Task');
+        return $this->hasMany(Task::class);
     }
 }

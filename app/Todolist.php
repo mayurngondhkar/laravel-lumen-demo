@@ -11,6 +11,6 @@ class Todolist extends Model
     protected $fillable = ['name', 'description', 'order'];
 
     public function steps() {
-        return $this->hasMany('App/Step');
+        return $this->hasMany(Step::class);
     }
 }
