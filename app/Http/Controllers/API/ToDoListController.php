@@ -17,7 +17,20 @@ class ToDoListController extends Controller
      */
     public function index()
     {
-        return response()->json(Todolist::all());
+        try {
+            $toDoLists = Todolist::query()->select('id', 'name', 'description', 'order')->get();
+        } catch (\Exception $e) {
+            return response()->json('Something Went Wrong!', 500);
+        }
+
+        foreach ($toDoLists as $key => $value) {
+            $toDoLists[$key]->view_toDoList = [
+                'ref' => 'toDoList',
+                'href' => "api/v1/todolists/$value->id",
+                'action' => 'GET'
+            ];
+        }
+        return response()->json($toDoLists, 200);
     }
 
     /**
