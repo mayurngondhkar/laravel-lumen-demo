@@ -7,6 +7,7 @@ use App\Todolist;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use mysql_xdevapi\Exception;
+use phpDocumentor\Reflection\Types\Object_;
 
 class ToDoListController extends Controller
 {
@@ -118,6 +119,23 @@ class ToDoListController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $toDoList = Todolist::find($id);
+        } catch (\Exception $e) {
+            return response()->json('Resource not found', 404);
+        }
+
+        try {
+            $toDoList->delete();
+        } catch (\Exception $e) {
+            // Log exception
+            return response()->json('To Do List item not deleted', 500);
+        }
+
+        $toDoListInfo = new Object_();
+        $toDoListInfo->view_toDoList = ['rel' => 'todolist', 'href' => 'api/v1/todolist', 'action' => 'GET'];
+        $toDoListInfo->msg = 'To Do List item deleted successfully';
+
+        return response()->json($toDoListInfo, 200);
     }
 }
