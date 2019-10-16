@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
-class TodolistTableSeeder extends Seeder
+class TasksTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,39 +12,49 @@ class TodolistTableSeeder extends Seeder
      */
     public function run()
     {
-        $todolist = new \App\Todolist([
+        $task = new \App\Task([
             'name' => 'Task Name ' . Str::random(10),
             'description' => 'Task Description ' . Str::random(5),
-            'order' => 1
+            'state_id' => 1,
+            'step_id' => 1,
+            'order_in_steplist' => 1
         ]);
-        $todolist->save();
+        $task->save();
 
-        $todolist = new \App\Todolist([
+        $task = new \App\Task([
             'name' => 'Task Name ' . Str::random(10),
             'description' => 'Task Description ' . Str::random(5),
-            'order' => 2
+            'state_id' => 2,
+            'step_id' => 2,
+            'order_in_steplist' => 2
         ]);
-        $todolist->save();
+        $task->save();
 
-        $todolist = new \App\Todolist([
+        $task = new \App\Task([
             'name' => 'Task Name ' . Str::random(10),
             'description' => 'Task Description ' . Str::random(5),
-            'order' => 3
+            'state_id' => 3,
+            'step_id' => 3,
+            'order_in_steplist' => 3
         ]);
-        $todolist->save();
+        $task->save();
 
-        $todolist = new \App\Todolist([
+        $task = new \App\Task([
             'name' => 'Task Name ' . Str::random(10),
             'description' => 'Task Description ' . Str::random(5),
-            'order' => 4
+            'state_id' => 4,
+            'step_id' => 4,
+            'order_in_steplist' => 4
         ]);
-        $todolist->save();
+        $task->save();
 
-        $todolist = new \App\Todolist([
+        $task = new \App\Task([
             'name' => 'Task Name ' . Str::random(10),
             'description' => 'Task Description ' . Str::random(5),
-            'order' => 5
+            'state_id' => 5,
+            'step_id' => 5,
+            'order_in_steplist' => 5
         ]);
-        $todolist->save();
+        $task->save();
     }
 }
