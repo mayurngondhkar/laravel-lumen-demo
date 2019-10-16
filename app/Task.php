@@ -13,4 +13,8 @@ class Task extends Model
     public function step() {
         return $this->belongsTo('App/Step');
     }
+
+    public function state() {
+        return $this->belongsTo('App/State');
+    }
 }
