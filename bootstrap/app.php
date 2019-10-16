@@ -99,4 +99,7 @@ $app->router->group([
     require __DIR__.'/../routes/api.php';
 });
 
+// Use Eloquent ORM
+$app->withEloquent();
+
 return $app;
