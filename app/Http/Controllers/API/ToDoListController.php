@@ -108,7 +108,40 @@ class ToDoListController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $toDoList = Todolist::find($id);
+        } catch (\Exception $e) {
+            return response()->json('Resource not found', 404);
+        }
+
+        $toDoList->name = $request->input('name');
+        $toDoList->description = $request->input('description');
+        $toDoList->order = $request->input('order');
+
+        try {
+            $toDoList->save();
+        } catch (\Exception $e) {
+            // Log exception
+            return response()->json('To Do List item not saved', 500);
+        }
+
+        try {
+            $toDoListItem = Todolist::query()
+                ->select('id', 'name', 'description', 'order')
+                ->where('id', '=', $request->input('id'))
+                ->first();
+        } catch (\Exception $e) {
+            // Log this
+            return response()->json('Something Went Wrong!', 500);
+        }
+
+        unset($toDoList['created_at']);
+        unset($toDoList['updated_at']);
+        unset($toDoList['deleted_at']);
+
+        $toDoList->msg = 'To Do Item Updated';
+        $toDoList->view_toDoList = ['rel' => 'todolist', 'href' => 'api/v1/todolist', 'action' => 'GET'];
+        return response()->json($toDoList, 200);
     }
 
     /**
