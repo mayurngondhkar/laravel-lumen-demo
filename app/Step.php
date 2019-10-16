@@ -13,4 +13,8 @@ class Step extends Model
     public function todolist() {
         return $this->belongsTo('App/Todolist');
     }
+
+    public function tasks() {
+        return $this->hasMany('App/Task');
+    }
 }
