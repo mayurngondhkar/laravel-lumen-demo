@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTaskTable extends Migration
+class CreateTodolistsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateTaskTable extends Migration
      */
     public function up()
     {
-        Schema::create('task', function (Blueprint $table) {
+        Schema::create('todolists', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('description');
-            $table->string('state_id');
-            $table->string('step_id');
-            $table->integer('order_in_steplist');
+            $table->integer('order');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -32,6 +30,6 @@ class CreateTaskTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('task');
+        Schema::dropIfExists('todolists');
     }
 }
