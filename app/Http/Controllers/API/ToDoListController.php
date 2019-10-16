@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Todolist;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -14,7 +15,7 @@ class ToDoListController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Todolist::all());
     }
 
     /**
