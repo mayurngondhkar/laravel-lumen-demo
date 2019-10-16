@@ -9,4 +9,8 @@ class Task extends Model
 {
     use SoftDeletes;
     protected $fillable = ['name', 'description', 'state_id', 'step_id', 'order_in_steplist'];
+
+    public function step() {
+        return $this->belongsTo('App/Step');
+    }
 }
