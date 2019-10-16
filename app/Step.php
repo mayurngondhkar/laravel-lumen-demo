@@ -9,4 +9,8 @@ class Step extends Model
 {
     use SoftDeletes;
     protected $fillable = ['name', 'description', 'todolist_id', 'order_in_todolist'];
+
+    public function todolist() {
+        return $this->belongsTo('App/Todolist');
+    }
 }
