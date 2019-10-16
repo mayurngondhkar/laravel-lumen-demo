@@ -101,5 +101,6 @@ $app->router->group([
 
 // Use Eloquent ORM
 $app->withEloquent();
+$app->withFacades();
 
 return $app;
