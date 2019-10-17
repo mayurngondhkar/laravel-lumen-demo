@@ -28,7 +28,7 @@ class ToDoListController extends Controller
     public function index()
     {
         try {
-            $toDoLists = Todolist::query()->select('id', 'name', 'description', 'order')->get();
+            $toDoLists = Todolist::query()->select('id', 'name', 'description', 'order', 'user_id')->where('user_id')->get();
         } catch (\Exception $e) {
             return response()->json('Something Went Wrong!', 500);
         }
@@ -56,7 +56,8 @@ class ToDoListController extends Controller
         $toDoList = new Todolist([
             'name' => $request->input('name'),
             'description' => $request->input('description'),
-            'order' => $lastOrderedTodoList + 1
+            'order' => $lastOrderedTodoList + 1,
+            'user_id' => Auth::id()
         ]);
 
         try {
@@ -83,7 +84,7 @@ class ToDoListController extends Controller
     {
         try {
             $toDoListItem = Todolist::query()
-                ->select('id', 'name', 'description', 'order')
+                ->select('id', 'name', 'description', 'order', 'user_id')
                 ->where('id', '=', $id)
                 ->first();
         } catch (\Exception $e) {
@@ -106,6 +107,11 @@ class ToDoListController extends Controller
         if(!$toDoListItem) {
             return response()->json('Resource not found', 404);
         }
+
+        if(Auth::id() !== $toDoListItem->user_id) {
+            return response()->json(['error' => 'Not Authorised'], 401);
+        }
+
         $toDoListItem['links'] = [[
             'ref' => 'toDoList',
             'href' => "api/v1/todolists/$id",
@@ -149,6 +155,10 @@ class ToDoListController extends Controller
 
         if(!$toDoList) {
             return response()->json('Resource not found', 404);
+        }
+
+        if(Auth::id() !== $toDoList->user_id) {
+            return response()->json(['error' => 'Not Authorised'], 401);
         }
 
         $toDoList->name = $request->input('name');
@@ -213,6 +223,10 @@ class ToDoListController extends Controller
 
         if(!$toDoList) {
             return response()->json('Resource not found', 404);
+        }
+
+        if(Auth::id() !== $toDoList->user_id) {
+            return response()->json(['error' => 'Not Authorised'], 401);
         }
 
         try {

@@ -52,4 +52,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         // TODO: Implement getJWTCustomClaims() method.
         return [];
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function todolist() {
+        return $this->hasMany(Task::class);
+    }
 }
