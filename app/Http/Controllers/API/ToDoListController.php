@@ -42,7 +42,16 @@ class ToDoListController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $lastOrderedTodoList = Todolist::max('order');
+
+        $toDoList = new Todolist([
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'order' => $lastOrderedTodoList + 1
+        ]);
+
+        $toDoList->save();
+        return response()->json($toDoList);
     }
 
     /**
