@@ -15,35 +15,46 @@ class TodolistTableSeeder extends Seeder
         $todolist = new \App\Todolist([
             'name' => 'Task Name ' . Str::random(10),
             'description' => 'Task Description ' . Str::random(5),
-            'order' => 1
+            'order' => 1,
+            'user_id' => 1,
         ]);
         $todolist->save();
 
         $todolist = new \App\Todolist([
             'name' => 'Task Name ' . Str::random(10),
             'description' => 'Task Description ' . Str::random(5),
-            'order' => 2
+            'order' => 2,
+            'user_id' => 1,
         ]);
         $todolist->save();
 
         $todolist = new \App\Todolist([
             'name' => 'Task Name ' . Str::random(10),
             'description' => 'Task Description ' . Str::random(5),
-            'order' => 3
+            'order' => 3,
+            'user_id' => 1,
         ]);
         $todolist->save();
 
         $todolist = new \App\Todolist([
             'name' => 'Task Name ' . Str::random(10),
             'description' => 'Task Description ' . Str::random(5),
-            'order' => 4
+            'order' => 4,
+            'user_id' => 1,
         ]);
         $todolist->save();
 
         $todolist = new \App\Todolist([
             'name' => 'Task Name ' . Str::random(10),
             'description' => 'Task Description ' . Str::random(5),
-            'order' => 5
+            'order' => 5,
+            'user_id' => 2,
+        ]);
+        $todolist = new \App\Todolist([
+            'name' => 'Task Name ' . Str::random(10),
+            'description' => 'Task Description ' . Str::random(5),
+            'order' => 6,
+            'user_id' => 2,
         ]);
         $todolist->save();
     }

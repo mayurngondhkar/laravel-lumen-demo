@@ -28,7 +28,7 @@ class ToDoListController extends Controller
     public function index()
     {
         try {
-            $toDoLists = Todolist::query()->select('id', 'name', 'description', 'order', 'user_id')->where('user_id')->get();
+            $toDoLists = Todolist::query()->select('id', 'name', 'description', 'order', 'user_id')->get();
         } catch (\Exception $e) {
             return response()->json('Something Went Wrong!', 500);
         }
@@ -108,7 +108,7 @@ class ToDoListController extends Controller
             return response()->json('Resource not found', 404);
         }
 
-        if(Auth::id() !== $toDoListItem->user_id) {
+        if(!$this->toDoListBelongsToUser($toDoListItem->user_id)) {
             return response()->json(['error' => 'Not Authorised'], 401);
         }
 
@@ -157,7 +157,7 @@ class ToDoListController extends Controller
             return response()->json('Resource not found', 404);
         }
 
-        if(Auth::id() !== $toDoList->user_id) {
+        if(!$this->toDoListBelongsToUser($toDoList->user_id)) {
             return response()->json(['error' => 'Not Authorised'], 401);
         }
 
@@ -225,7 +225,7 @@ class ToDoListController extends Controller
             return response()->json('Resource not found', 404);
         }
 
-        if(Auth::id() !== $toDoList->user_id) {
+        if(!$this->toDoListBelongsToUser($toDoList->user_id)) {
             return response()->json(['error' => 'Not Authorised'], 401);
         }
 
@@ -241,5 +241,13 @@ class ToDoListController extends Controller
         $toDoListInfo->msg = 'To Do List item deleted successfully';
 
         return response()->json($toDoListInfo, 200);
+    }
+
+    public function toDoListBelongsToUser($id) {
+        if(Auth::id() !== $id) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
