@@ -41,7 +41,22 @@ class StateController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $state = new State([
+            'name' => $request->input('name'),
+        ]);
+
+        try {
+            $state->save();
+        } catch (\Exception $e) {
+            // Log exception
+            return response()->json('To Do List item not saved', 500);
+        }
+
+        unset($state['updated_at']);
+        $state->msg = 'State created successfully';
+        $state->view_states = ['rel' => 'state', 'href' => 'api/v1/states', 'action' => 'GET'];
+
+        return response()->json($state, 200);
     }
 
     /**
