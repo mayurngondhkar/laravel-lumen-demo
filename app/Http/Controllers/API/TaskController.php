@@ -145,8 +145,33 @@ class TaskController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function destroy($id)
+    public function destroy($toDoListId, $stepId, $id)
     {
-        //
+        try {
+            $task = Task::find($id);
+        } catch (\Exception $e) {
+            return response()->json('Something went wrong', 500);
+        }
+
+        if(!$task) {
+            return response()->json('Resource not found', 404);
+        }
+
+        try {
+            $task->delete();
+        } catch (\Exception $e) {
+            // Log exception
+            return response()->json('Task not deleted', 500);
+        }
+
+        $taskInfo = new \stdClass();
+        $taskInfo->view_step = [
+            'rel' => 'step',
+            'href' => "api/v1/todolist/$toDoListId/steps/$stepId",
+            'action' => 'GET'
+        ];
+        $taskInfo->msg = 'Task deleted successfully';
+
+        return response()->json($taskInfo);
     }
 }
