@@ -116,11 +116,15 @@ class ToDoListController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         try {
-            $toDoList = Todolist::find($request->input('id'));
+            $toDoList = Todolist::find($id);
         } catch (\Exception $e) {
+            return response()->json('Something went wrong', 500);
+        }
+
+        if(!$toDoList) {
             return response()->json('Resource not found', 404);
         }
 
@@ -138,7 +142,7 @@ class ToDoListController extends Controller
         try {
             $toDoListItem = Todolist::query()
                 ->select('id', 'name', 'description', 'order')
-                ->where('id', '=', $request->input('id'))
+                ->where('id', $id)
                 ->first();
         } catch (\Exception $e) {
             // Log this

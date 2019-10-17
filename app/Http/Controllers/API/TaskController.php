@@ -131,7 +131,7 @@ class TaskController extends Controller
         try {
             $task = Task::find($id);
         } catch (\Exception $e) {
-            return response()->json('Resource not found', 404);
+            return response()->json('Something went wrong', 500);
         }
 
         if(!$task) {

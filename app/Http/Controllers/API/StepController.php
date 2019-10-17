@@ -136,6 +136,10 @@ class StepController extends Controller
         try {
             $step = Step::find($id);
         } catch (\Exception $e) {
+            return response()->json('Something went wrong', 500);
+        }
+
+        if(!$step) {
             return response()->json('Resource not found', 404);
         }
 
@@ -152,7 +156,7 @@ class StepController extends Controller
         try {
             $savedStep = Step::query()
                 ->select('id', 'name', 'description','todolist_id', 'order_in_todolist')
-                ->where('id', '=', $request->input('id'))
+                ->where('id', $id)
                 ->first();
         } catch (\Exception $e) {
             // Log this

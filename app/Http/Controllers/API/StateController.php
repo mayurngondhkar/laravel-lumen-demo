@@ -36,7 +36,7 @@ class StateController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return Response
      */
     public function store(Request $request)
@@ -97,6 +97,10 @@ class StateController extends Controller
         try {
             $state = State::find($id);
         } catch (\Exception $e) {
+            return response()->json('Something went wrong', 500);
+        }
+
+        if(!$state) {
             return response()->json('Resource not found', 404);
         }
 
@@ -106,7 +110,7 @@ class StateController extends Controller
             $state->save();
         } catch (\Exception $e) {
             // Log exception
-            return response()->json('State not saved', 500);
+            return response()->json('Something went wrong', 500);
         }
 
         try {
