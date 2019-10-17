@@ -156,6 +156,27 @@ class StepController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $step = Step::find($id);
+        } catch (\Exception $e) {
+            return response()->json('Resource not found', 404);
+        }
+
+        try {
+            $step->delete();
+        } catch (\Exception $e) {
+            // Log exception
+            return response()->json('To Do List item not deleted', 500);
+        }
+
+        $stepInfo = new \stdClass();
+        $stepInfo->view_toDoListItem = [
+            'rel' => 'todolist',
+            'href' => "api/v1/todolist/$step->todolist_id",
+            'action' => 'GET'
+        ];
+        $stepInfo->msg = 'To Do List item deleted successfully';
+
+        return response()->json($stepInfo);
     }
 }
