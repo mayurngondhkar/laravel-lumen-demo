@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Step;
+use App\Task;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\URL;
@@ -58,7 +59,42 @@ class StepController extends Controller
      */
     public function show($id)
     {
-        //
+        try { $step = Step::query() ->select('id', 'name', 'description', 'todolist_id', 'order_in_todolist')
+                ->where('id', '=', $id)
+                ->first();
+        } catch (\Exception $e) {
+            // Log this
+            return response()->json('Something Went Wrong!', 500);
+        }
+
+        try {
+            $stepTasks = Task::with('step')
+                ->where('step_id', $id)
+                ->select('id')
+                ->getQuery()
+                ->get();
+        } catch (\Exception $e) {
+            // Log this
+            return response()->json('Something Went Wrong!', 500);
+        }
+
+        if(!$step) {
+            return response()->json('Resource not found', 404);
+        }
+
+        $step->view_toDoList = ['rel' => 'todolists', 'href' => 'api/v1/todolist', 'action' => 'GET'];
+        $step->view_toDoListItem = [
+            'rel' => 'todolist',
+            'href' => "api/v1/todolist/$step->todolist_id",
+            'action' => 'GET'
+        ];
+        $step->view_toDoListItemSteps = [
+            'rel' => 'step',
+            'href' => "api/v1/todolist/$step->todolist_id/steps",
+            'action' => 'GET'
+        ];
+
+        return response()->json($step);
     }
 
     /**

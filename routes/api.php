@@ -19,5 +19,6 @@ $router->group(['prefix' => 'api/v1/todolists'], function () use ($router) {
     $router->delete('{id}',  ['uses' => 'API\ToDoListController@destroy']);
     $router->group(['prefix' => '{toDoListId}/steps'], function () use ($router) {
         $router->get('',  ['uses' => 'API\StepController@index']);
+        $router->get('{id}',  ['uses' => 'API\StepController@show']);
     });
 });
