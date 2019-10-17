@@ -45,11 +45,46 @@ class TaskController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
+     * @param $toDoListId
+     * @param $stepId
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $toDoListId, $stepId)
     {
-        //
+        $lastTask = Task::query()->where('step_id', $stepId)->max('order_in_steplist');
+
+        $task = new Task([
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'state_id' => $request->input('state_id'),
+            'order_in_steplist' => $lastTask + 1,
+            'step_id' => $stepId
+        ]);
+
+        $task->save();
+
+        try {
+            $task->save();
+        } catch (\Exception $e) {
+            // Log error
+            return response()->json('Something Went Wrong!', 500);
+        }
+
+        unset($task['updated_at']);
+
+        $task->msg = 'Task Created';
+        $task->view_step = [
+            'rel' => 'step',
+            'href' => "api/v1/todolist/$toDoListId/steps/$stepId",
+            'action' => 'GET'
+        ];
+        $task->view_tasks = [
+            'rel' => 'tasks',
+            'href' => "api/v1/todolist/$toDoListId/steps/$stepId/tasks",
+            'action' => 'GET'
+        ];
+
+        return response()->json($task, 200);
     }
 
     /**
