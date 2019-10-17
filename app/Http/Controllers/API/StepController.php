@@ -26,16 +26,15 @@ class StepController extends Controller
         }
 
         foreach ($steps as $key => $value) {
-            $steps[$key]->view_step = [
+            $steps[$key]->links = [[
                 'ref' => 'step',
                 'href' => "api/v1/todolists/$toDoListId/steps/$value->id",
                 'action' => 'GET'
-            ];
-            $steps[$key]->view_toDoList = [
+            ], [
                 'ref' => 'toDoList',
                 'href' => "api/v1/todolists/$toDoListId",
                 'action' => 'GET'
-            ];
+            ]];
         }
         return response()->json($steps);
     }
@@ -67,16 +66,15 @@ class StepController extends Controller
 
         unset($step['updated_at']);
 
-        $step->view_toDoListItem = [
+        $step['links'] = [[
             'rel' => 'todolist',
             'href' => "api/v1/todolist/$step->todolist_id",
             'action' => 'GET'
-        ];
-        $step->view_toDoListItemSteps = [
+        ], [
             'rel' => 'step',
             'href' => "api/v1/todolist/$step->todolist_id/steps",
             'action' => 'GET'
-        ];
+        ]];
 
         return response()->json($step);
     }
@@ -113,13 +111,24 @@ class StepController extends Controller
             return response()->json('Resource not found', 404);
         }
 
-        $step->view_tasks = ['rel' => 'tasks', 'href' => "api/v1/todolist/$toDoListId/steps/$id/tasks", 'action' => 'GET'];
-
-        $step->view_toDoListItem = [
-            'rel' => 'todolist',
-            'href' => "api/v1/todolist/$step->todolist_id",
-            'action' => 'GET'
-        ];
+        $step['links'] = [
+            [
+                 'ref' => 'step',
+                 'href' => "api/v1/todolists/$toDoListId/steps/$id",
+                 'action' => 'PUT'
+            ], [
+                 'ref' => 'step',
+                 'href' => "api/v1/todolists/$toDoListId/steps/$id",
+                 'action' => 'DELETE'
+            ], [
+                'rel' => 'tasks',
+                'href' => "api/v1/todolist/$toDoListId/steps/$id/tasks",
+                'action' => 'GET'
+            ], [
+                'rel' => 'todolist',
+                'href' => "api/v1/todolist/$step->todolist_id",
+                'action' => 'GET'
+        ]];
 
         return response()->json($step);
     }
@@ -164,16 +173,23 @@ class StepController extends Controller
         }
 
         $savedStep->msg = 'To Do Item Updated';
-        $savedStep->view_toDoListItem = [
+        $savedStep['links'] = [[
             'rel' => 'todolist',
-            'href' => "api/v1/todolist/$savedStep->todolist_id",
+            'href' => "api/v1/todolist/$toDoListId",
             'action' => 'GET'
-        ];
-        $savedStep->view_toDoListItemSteps = [
+        ], [
             'rel' => 'step',
-            'href' => "api/v1/todolist/$savedStep->todolist_id/steps",
+            'href' => "api/v1/todolist/$toDoListId/steps/$id",
             'action' => 'GET'
-        ];
+        ],[
+            'rel' => 'step',
+            'href' => "api/v1/todolist/$toDoListId/steps/$id",
+            'action' => 'PUT'
+        ], [
+            'rel' => 'tasks',
+            'href' => "api/v1/todolist/$toDoListId/steps/$id/tasks",
+            'action' => 'GET'
+        ]];
 
         return response()->json($savedStep);
     }

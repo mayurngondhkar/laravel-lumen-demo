@@ -23,7 +23,7 @@ class StateController extends Controller
         }
 
         foreach ($states as $key => $value) {
-            $states[$key]->view_state = [
+            $states[$key]->links = [
                 'ref' => 'state',
                 'href' => "api/v1/states/$value->id",
                 'action' => 'GET'
@@ -54,7 +54,7 @@ class StateController extends Controller
 
         unset($state['updated_at']);
         $state->msg = 'State created successfully';
-        $state->view_states = ['rel' => 'state', 'href' => 'api/v1/states', 'action' => 'GET'];
+        $state['links'] = ['rel' => 'state', 'href' => 'api/v1/states', 'action' => 'GET'];
 
         return response()->json($state, 200);
     }
@@ -80,7 +80,7 @@ class StateController extends Controller
             return response()->json('Resource not found', 404);
         }
 
-        $state->view_states = ['rel' => 'state', 'href' => 'api/v1/states', 'action' => 'GET'];
+        $state['links'] = ['rel' => 'state', 'href' => 'api/v1/states', 'action' => 'GET'];
 
         return response()->json($state, 200);
     }
@@ -126,7 +126,7 @@ class StateController extends Controller
         unset($updatedState['deleted_at']);
 
         $updatedState->msg = 'State Updated';
-        $updatedState->view_states = ['rel' => 'state', 'href' => 'api/v1/states', 'action' => 'GET'];
+        $updatedState['links'] = ['rel' => 'state', 'href' => 'api/v1/states', 'action' => 'GET'];
         return response()->json($updatedState, 200);
     }
 
@@ -156,7 +156,7 @@ class StateController extends Controller
         }
 
         $stateInfo = new \stdClass();
-        $stateInfo->view_states = ['rel' => 'state', 'href' => 'api/v1/states', 'action' => 'GET'];
+        $stateInfo->links = ['rel' => 'state', 'href' => 'api/v1/states', 'action' => 'GET'];
         $stateInfo->msg = 'State deleted successfully';
 
         return response()->json($stateInfo, 200);

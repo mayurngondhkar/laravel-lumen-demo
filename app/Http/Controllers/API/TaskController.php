@@ -26,16 +26,15 @@ class TaskController extends Controller
         }
 
         foreach ($tasks as $key => $value) {
-            $tasks[$key]->view_task = [
+            $tasks[$key]->links = [[
                 'ref' => 'task',
                 'href' => "api/v1/todolists/$toDoListId/steps/$stepId/tasks/$value->id",
                 'action' => 'GET'
-            ];
-            $tasks[$key]->view_step = [
+            ], [
                 'rel' => 'step',
                 'href' => "api/v1/todolist/$toDoListId/steps/$stepId",
                 'action' => 'GET'
-            ];
+            ]];
         }
 
         return response()->json($tasks, 200);
@@ -73,16 +72,15 @@ class TaskController extends Controller
         unset($task['updated_at']);
 
         $task->msg = 'Task Created';
-        $task->view_step = [
+        $task['links'] = [[
             'rel' => 'step',
             'href' => "api/v1/todolist/$toDoListId/steps/$stepId",
             'action' => 'GET'
-        ];
-        $task->view_tasks = [
+        ], [
             'rel' => 'tasks',
             'href' => "api/v1/todolist/$toDoListId/steps/$stepId/tasks",
             'action' => 'GET'
-        ];
+        ]];
 
         return response()->json($task, 200);
     }
@@ -109,11 +107,23 @@ class TaskController extends Controller
             return response()->json('Resource not found', 404);
         }
 
-        $task['view_step'] = [
+        $task['links'] = [[
+            'rel' => 'task',
+            'href' => "api/v1/todolist/$id/steps/$stepId/tasks/$id",
+            'action' => 'PUT'
+        ],[
+            'rel' => 'task',
+            'href' => "api/v1/todolist/$id/steps/$stepId/tasks/$id",
+            'action' => 'DELETE'
+        ],[
+            'rel' => 'tasks',
+            'href' => "api/v1/todolist/$id/steps/$stepId/tasks",
+            'action' => 'GET'
+        ] ,[
             'rel' => 'step',
             'href' => "api/v1/todolist/$id/steps/$stepId",
             'action' => 'GET'
-        ];
+        ]];
         return response()->json($task);
     }
 
@@ -160,16 +170,19 @@ class TaskController extends Controller
         }
 
         $savedTask->msg = 'Task Updated';
-        $savedTask->view_step = [
+        $savedTask['links'] = [[
             'rel' => 'step',
             'href' => "api/v1/todolist/$toDoListId/steps/$stepId",
             'action' => 'GET'
-        ];
-        $savedTask->view_tasks = [
-            'rel' => 'task',
+        ], [
+            'rel' => 'step',
+            'href' => "api/v1/todolist/$toDoListId/steps/$stepId",
+            'action' => 'PUT'
+        ],[
+            'rel' => 'tasks',
             'href' => "api/v1/todolist/$toDoListId/steps/$stepId/tasks",
             'action' => 'GET'
-        ];
+        ]];
 
         return response()->json($savedTask);
     }
@@ -200,7 +213,7 @@ class TaskController extends Controller
         }
 
         $taskInfo = new \stdClass();
-        $taskInfo->view_step = [
+        $taskInfo->links = [
             'rel' => 'step',
             'href' => "api/v1/todolist/$toDoListId/steps/$stepId",
             'action' => 'GET'
