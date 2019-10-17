@@ -43,12 +43,43 @@ class StepController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     * @param $toDoListId
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $toDoListId)
     {
-        //
+        $lastStep = Step::query()->where('todolist_id', $toDoListId)->max('order_in_todolist');
+
+        $step = new Step([
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'order_in_todolist' => $lastStep + 1,
+            'todolist_id' => $toDoListId
+        ]);
+
+        try {
+            $step->save();
+        } catch (\Exception $e) {
+            // Log error
+            return response()->json('Something Went Wrong!', 500);
+        }
+
+        unset($step['updated_at']);
+
+        $step->view_toDoList = ['rel' => 'todolists', 'href' => 'api/v1/todolist', 'action' => 'GET'];
+        $step->view_toDoListItem = [
+            'rel' => 'todolist',
+            'href' => "api/v1/todolist/$step->todolist_id",
+            'action' => 'GET'
+        ];
+        $step->view_toDoListItemSteps = [
+            'rel' => 'step',
+            'href' => "api/v1/todolist/$step->todolist_id/steps",
+            'action' => 'GET'
+        ];
+
+        return response()->json($step);
     }
 
     /**
