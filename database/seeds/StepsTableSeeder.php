@@ -23,7 +23,7 @@ class StepsTableSeeder extends Seeder
         $step = new \App\Step([
             'name' => 'Step Name ' . Str::random(10),
             'description' => 'Step Description ' . Str::random(5),
-            'todolist_id' => '2',
+            'todolist_id' => '1',
             'order_in_todolist' => 2,
         ]);
 
@@ -31,8 +31,8 @@ class StepsTableSeeder extends Seeder
         $step = new \App\Step([
             'name' => 'Step Name ' . Str::random(10),
             'description' => 'Step Description ' . Str::random(5),
-            'todolist_id' => '3',
-            'order_in_todolist' => 3,
+            'todolist_id' => '2',
+            'order_in_todolist' => 1,
         ]);
         $step->save();
 

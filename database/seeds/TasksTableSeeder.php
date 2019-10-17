@@ -25,7 +25,7 @@ class TasksTableSeeder extends Seeder
             'name' => 'Task Name ' . Str::random(10),
             'description' => 'Task Description ' . Str::random(5),
             'state_id' => 2,
-            'step_id' => 2,
+            'step_id' => 1,
             'order_in_steplist' => 2
         ]);
         $task->save();
@@ -34,7 +34,7 @@ class TasksTableSeeder extends Seeder
             'name' => 'Task Name ' . Str::random(10),
             'description' => 'Task Description ' . Str::random(5),
             'state_id' => 3,
-            'step_id' => 3,
+            'step_id' => 1,
             'order_in_steplist' => 3
         ]);
         $task->save();
