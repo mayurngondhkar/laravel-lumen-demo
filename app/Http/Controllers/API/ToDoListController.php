@@ -8,9 +8,18 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use mysql_xdevapi\Exception;
 use phpDocumentor\Reflection\Types\Object_;
+use Auth;
 
 class ToDoListController extends Controller
 {
+    /**
+     * ToDoListController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *

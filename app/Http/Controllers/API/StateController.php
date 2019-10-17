@@ -10,6 +10,14 @@ use Illuminate\Http\Response;
 class StateController extends Controller
 {
     /**
+     * StateController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return Response

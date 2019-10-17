@@ -10,6 +10,14 @@ use Illuminate\Http\Response;
 class TaskController extends Controller
 {
     /**
+     * TaskController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return Response
