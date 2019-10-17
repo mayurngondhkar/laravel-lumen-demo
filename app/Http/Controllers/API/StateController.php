@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\State;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -14,7 +15,21 @@ class StateController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $states = State::query()->select('id', 'name')->get();
+        } catch (\Exception $e) {
+            return response()->json('Something Went Wrong!', 500);
+        }
+
+        foreach ($states as $key => $value) {
+            $states[$key]->view_state = [
+                'ref' => 'state',
+                'href' => "api/v1/states/$value->id",
+                'action' => 'GET'
+            ];
+        }
+
+        return response()->json($states, 200);
     }
 
     /**
