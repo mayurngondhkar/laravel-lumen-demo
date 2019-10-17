@@ -78,7 +78,36 @@ class StateController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try {
+            $state = State::find($id);
+        } catch (\Exception $e) {
+            return response()->json('Resource not found', 404);
+        }
+
+        $state->name = $request->input('name');
+
+        try {
+            $state->save();
+        } catch (\Exception $e) {
+            // Log exception
+            return response()->json('State not saved', 500);
+        }
+
+        try {
+            $updatedState = State::query()
+                ->select('id', 'name')->where('id', $id)->first();
+        } catch (\Exception $e) {
+            // Log this
+            return response()->json('Something Went Wrong!', 500);
+        }
+
+        unset($updatedState['created_at']);
+        unset($updatedState['updated_at']);
+        unset($updatedState['deleted_at']);
+
+        $updatedState->msg = 'State Updated';
+        $updatedState->view_states = ['rel' => 'state', 'href' => 'api/v1/states', 'action' => 'GET'];
+        return response()->json($updatedState, 200);
     }
 
     /**
