@@ -67,7 +67,6 @@ class StepController extends Controller
 
         unset($step['updated_at']);
 
-        $step->view_toDoList = ['rel' => 'todolists', 'href' => 'api/v1/todolist', 'action' => 'GET'];
         $step->view_toDoListItem = [
             'rel' => 'todolist',
             'href' => "api/v1/todolist/$step->todolist_id",
@@ -85,10 +84,11 @@ class StepController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param $toDoListId
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($toDoListId, $id)
     {
         try { $step = Step::query() ->select('id', 'name', 'description', 'todolist_id', 'order_in_todolist')
                 ->where('id', '=', $id)
@@ -113,15 +113,11 @@ class StepController extends Controller
             return response()->json('Resource not found', 404);
         }
 
-        $step->view_toDoList = ['rel' => 'todolists', 'href' => 'api/v1/todolist', 'action' => 'GET'];
+        $step->view_tasks = ['rel' => 'tasks', 'href' => "api/v1/todolist/$toDoListId/steps/$id/tasks", 'action' => 'GET'];
+
         $step->view_toDoListItem = [
             'rel' => 'todolist',
             'href' => "api/v1/todolist/$step->todolist_id",
-            'action' => 'GET'
-        ];
-        $step->view_toDoListItemSteps = [
-            'rel' => 'step',
-            'href' => "api/v1/todolist/$step->todolist_id/steps",
             'action' => 'GET'
         ];
 
@@ -135,10 +131,10 @@ class StepController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $toDoListId, $id)
     {
         try {
-            $step = Step::find($request->input('id'));
+            $step = Step::find($id);
         } catch (\Exception $e) {
             return response()->json('Resource not found', 404);
         }
@@ -164,7 +160,6 @@ class StepController extends Controller
         }
 
         $savedStep->msg = 'To Do Item Updated';
-        $savedStep->view_toDoList = ['rel' => 'todolists', 'href' => 'api/v1/todolist', 'action' => 'GET'];
         $savedStep->view_toDoListItem = [
             'rel' => 'todolist',
             'href' => "api/v1/todolist/$savedStep->todolist_id",
@@ -185,11 +180,15 @@ class StepController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($toDoListId, $id)
     {
         try {
             $step = Step::find($id);
         } catch (\Exception $e) {
+            return response()->json('Something went wrong', 500);
+        }
+
+        if(!$step) {
             return response()->json('Resource not found', 404);
         }
 

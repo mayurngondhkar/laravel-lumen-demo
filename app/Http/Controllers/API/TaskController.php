@@ -30,17 +30,12 @@ class TaskController extends Controller
                 'href' => "api/v1/todolists/$toDoListId/steps/$stepId/tasks/$value->id",
                 'action' => 'GET'
             ];
+            $tasks[$key]->view_step = [
+                'rel' => 'step',
+                'href' => "api/v1/todolist/$toDoListId/steps/$stepId",
+                'action' => 'GET'
+            ];
         }
-        $tasks['view_toDoListItem'] = [
-            'rel' => 'todolist',
-            'href' => "api/v1/todolist/$toDoListId",
-            'action' => 'GET'
-        ];
-        $tasks['view_step'] = [
-            'rel' => 'step',
-            'href' => "api/v1/todolist/$toDoListId/steps/$stepId",
-            'action' => 'GET'
-        ];
 
         return response()->json($tasks, 200);
     }
@@ -78,12 +73,6 @@ class TaskController extends Controller
             return response()->json('Resource not found', 404);
         }
 
-        $task->view_toDoList = ['rel' => 'todolist', 'href' => 'api/v1/todolist', 'action' => 'GET'];
-        $task['view_toDoListItem'] = [
-            'rel' => 'todolistItem',
-            'href' => "api/v1/todolist/$id",
-            'action' => 'GET'
-        ];
         $task['view_step'] = [
             'rel' => 'step',
             'href' => "api/v1/todolist/$id/steps/$stepId",

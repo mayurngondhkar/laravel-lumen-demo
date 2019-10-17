@@ -50,8 +50,18 @@ class ToDoListController extends Controller
             'order' => $lastOrderedTodoList + 1
         ]);
 
-        $toDoList->save();
-        return response()->json($toDoList);
+        try {
+            $toDoList->save();
+        } catch (\Exception $e) {
+            // Log exception
+            return response()->json('To Do List item not saved', 500);
+        }
+
+        unset($toDoList['updated_at']);
+        $toDoList->msg = 'Item created successfully';
+        $toDoList->view_toDoList = ['rel' => 'todolist', 'href' => 'api/v1/todolist', 'action' => 'GET'];
+
+        return response()->json($toDoList, 200);
     }
 
     /**
@@ -90,16 +100,7 @@ class ToDoListController extends Controller
 
         $toDoListItem->view_toDoList = ['rel' => 'todolist', 'href' => 'api/v1/todolist', 'action' => 'GET'];
 
-        $stepsInfo = [];
-        foreach ($listSteps as $listStep) {
-            array_push($stepsInfo, [
-                'ref' => 'step',
-                'href' => "api/v1/todolists/$listStep->id",
-                'action' => 'GET'
-            ] );
-        }
-
-        $toDoListItem->view_steps = $stepsInfo;
+        $toDoListItem->view_steps = ['rel' => 'steps', 'href' => "api/v1/todolist/$id/steps", 'action' => 'GET'];
 
         if ($toDoListItem) {
             return response()->json($toDoListItem, 200);
@@ -144,13 +145,13 @@ class ToDoListController extends Controller
             return response()->json('Something Went Wrong!', 500);
         }
 
-        unset($toDoList['created_at']);
-        unset($toDoList['updated_at']);
-        unset($toDoList['deleted_at']);
+        unset($toDoListItem['created_at']);
+        unset($toDoListItem['updated_at']);
+        unset($toDoListItem['deleted_at']);
 
-        $toDoList->msg = 'To Do Item Updated';
-        $toDoList->view_toDoList = ['rel' => 'todolist', 'href' => 'api/v1/todolist', 'action' => 'GET'];
-        return response()->json($toDoList, 200);
+        $toDoListItem->msg = 'To Do Item Updated';
+        $toDoListItem->view_toDoList = ['rel' => 'todolist', 'href' => 'api/v1/todolist', 'action' => 'GET'];
+        return response()->json($toDoListItem, 200);
     }
 
     /**
@@ -164,6 +165,10 @@ class ToDoListController extends Controller
         try {
             $toDoList = Todolist::find($id);
         } catch (\Exception $e) {
+            return response()->json('Something went wrong', 500);
+        }
+
+        if(!$toDoList) {
             return response()->json('Resource not found', 404);
         }
 
