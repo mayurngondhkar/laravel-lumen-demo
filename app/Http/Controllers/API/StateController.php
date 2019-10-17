@@ -114,10 +114,31 @@ class StateController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {
-        //
+        try {
+            $state = State::find($id);
+        } catch (\Exception $e) {
+            return response()->json('Something went wrong', 500);
+        }
+
+        if(!$state) {
+            return response()->json('Resource not found', 404);
+        }
+
+        try {
+            $state->delete();
+        } catch (\Exception $e) {
+            // Log exception
+            return response()->json('State not deleted', 500);
+        }
+
+        $stateInfo = new \stdClass();
+        $stateInfo->view_states = ['rel' => 'state', 'href' => 'api/v1/states', 'action' => 'GET'];
+        $stateInfo->msg = 'State deleted successfully';
+
+        return response()->json($stateInfo, 200);
     }
 }
