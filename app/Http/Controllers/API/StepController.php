@@ -104,9 +104,48 @@ class StepController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        try {
+            $step = Step::find($request->input('id'));
+        } catch (\Exception $e) {
+            return response()->json('Resource not found', 404);
+        }
+
+        $step->name = $request->input('name');
+        $step->description = $request->input('description');
+        $step->order_in_todolist = $request->input('order_in_todolist');
+
+        try {
+            $step->save();
+        } catch (\Exception $e) {
+            // Log exception
+            return response()->json('To Do List item not saved', 500);
+        }
+        try {
+            $savedStep = Step::query()
+                ->select('id', 'name', 'description','todolist_id', 'order_in_todolist')
+                ->where('id', '=', $request->input('id'))
+                ->first();
+        } catch (\Exception $e) {
+            // Log this
+            return response()->json('Something Went Wrong!', 500);
+        }
+
+        $savedStep->msg = 'To Do Item Updated';
+        $savedStep->view_toDoList = ['rel' => 'todolists', 'href' => 'api/v1/todolist', 'action' => 'GET'];
+        $savedStep->view_toDoListItem = [
+            'rel' => 'todolist',
+            'href' => "api/v1/todolist/$savedStep->todolist_id",
+            'action' => 'GET'
+        ];
+        $savedStep->view_toDoListItemSteps = [
+            'rel' => 'step',
+            'href' => "api/v1/todolist/$savedStep->todolist_id/steps",
+            'action' => 'GET'
+        ];
+
+        return response()->json($savedStep);
     }
 
     /**
