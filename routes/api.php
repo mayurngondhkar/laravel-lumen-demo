@@ -32,3 +32,11 @@ $router->group(['prefix' => 'api/v1/todolists'], function () use ($router) {
         });
     });
 });
+
+$router->group(['prefix' => 'api/v1/states'], function () use ($router) {
+    $router->get('',  ['uses' => 'API\StateController@index']);
+    $router->get('{stateId}',  ['uses' => 'API\StateController@show']);
+    $router->post('',  ['uses' => 'API\StateController@store']);
+    $router->put('{stateId}',  ['uses' => 'API\StateController@update']);
+    $router->delete('{stateId}',  ['uses' => 'API\StateController@destroy']);
+});
