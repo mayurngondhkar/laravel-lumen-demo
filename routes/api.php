@@ -23,5 +23,8 @@ $router->group(['prefix' => 'api/v1/todolists'], function () use ($router) {
         $router->post('',  ['uses' => 'API\StepController@store']);
         $router->put('{id}',  ['uses' => 'API\StepController@update']);
         $router->delete('{id}',  ['uses' => 'API\StepController@destroy']);
+        $router->group(['prefix' => '{stepId}/tasks'], function () use ($router) {
+            $router->get('',  ['uses' => 'API\TaskController@index']);
+        });
     });
 });
