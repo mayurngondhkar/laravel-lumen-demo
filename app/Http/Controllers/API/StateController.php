@@ -51,7 +51,22 @@ class StateController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            $state = State::query()->select('id', 'name')
+            ->where('id', '=', $id)
+            ->first();
+        } catch (\Exception $e) {
+            // Log this
+            return response()->json('Something Went Wrong!', 500);
+        }
+
+        if(!$state) {
+            return response()->json('Resource not found', 404);
+        }
+
+        $state->view_states = ['rel' => 'state', 'href' => 'api/v1/states', 'action' => 'GET'];
+
+        return response()->json($state, 200);
     }
 
     /**
