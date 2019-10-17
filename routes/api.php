@@ -27,7 +27,7 @@ $router->group(['prefix' => 'api/v1/todolists'], function () use ($router) {
             $router->get('',  ['uses' => 'API\TaskController@index']);
             $router->get('{taskId}',  ['uses' => 'API\TaskController@show']);
             $router->post('',  ['uses' => 'API\TaskController@store']);
-            $router->put('{taskId}',  ['uses' => 'API\TaskController@update']);
+        $router->put('{taskId}',  ['uses' => 'API\TaskController@update']);
             $router->delete('{taskId}',  ['uses' => 'API\TaskController@destroy']);
         });
     });
@@ -39,4 +39,13 @@ $router->group(['prefix' => 'api/v1/states'], function () use ($router) {
     $router->post('',  ['uses' => 'API\StateController@store']);
     $router->put('{stateId}',  ['uses' => 'API\StateController@update']);
     $router->delete('{stateId}',  ['uses' => 'API\StateController@destroy']);
+});
+
+// API route group
+$router->group(['prefix' => 'api'], function () use ($router) {
+    $router->post('register', 'AuthController@register');
+    $router->post('login', 'AuthController@login');
+    $router->get('profile', 'UserController@profile');
+    $router->get('users/{id}', 'UserController@singleUser');
+    $router->get('users', 'UserController@allUsers');
 });
