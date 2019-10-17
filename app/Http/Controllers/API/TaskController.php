@@ -62,9 +62,34 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, $stepId, $taskId)
     {
-        //
+        try {
+            $task = Task::query()
+                ->select('id', 'name', 'description', 'state_id', 'step_id', 'order_in_steplist')
+                ->where('id', $taskId)
+                ->first();
+        } catch (\Exception $e) {
+            // Log this
+            return response()->json('Something Went Wrong!', 500);
+        }
+
+        if(!$task) {
+            return response()->json('Resource not found', 404);
+        }
+
+        $task->view_toDoList = ['rel' => 'todolist', 'href' => 'api/v1/todolist', 'action' => 'GET'];
+        $task['view_toDoListItem'] = [
+            'rel' => 'todolistItem',
+            'href' => "api/v1/todolist/$id",
+            'action' => 'GET'
+        ];
+        $task['view_step'] = [
+            'rel' => 'step',
+            'href' => "api/v1/todolist/$id/steps/$stepId",
+            'action' => 'GET'
+        ];
+        return response()->json($task);
     }
 
     /**
