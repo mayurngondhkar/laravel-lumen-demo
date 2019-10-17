@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Step;
 use App\Task;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -24,6 +25,14 @@ class TaskController extends Controller
      */
     public function index($toDoListId, $stepId)
     {
+        if(!(new ToDoListController)->toDoListBelongsToUser($toDoListId)) {
+            return response()->json(['error' => 'Not Authorised'], 401);
+        }
+
+        if(!(new StepController)->stepBelongsToToDoList($toDoListId, $stepId)) {
+            return response()->json(['error' => 'Not Authorised'], 401);
+        }
+
         try {
             $tasks = Task::query()
                 ->select('id', 'name', 'description', 'state_id', 'step_id', 'order_in_steplist')
@@ -58,6 +67,14 @@ class TaskController extends Controller
      */
     public function store(Request $request, $toDoListId, $stepId)
     {
+        if(!(new ToDoListController)->toDoListBelongsToUser($toDoListId)) {
+            return response()->json(['error' => 'Not Authorised'], 401);
+        }
+
+        if(!(new StepController)->stepBelongsToToDoList($toDoListId, $stepId)) {
+            return response()->json(['error' => 'Not Authorised'], 401);
+        }
+
         $lastTask = Task::query()->where('step_id', $stepId)->max('order_in_steplist');
 
         $task = new Task([
@@ -99,8 +116,16 @@ class TaskController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id, $stepId, $taskId)
+    public function show($toDoListId, $stepId, $taskId)
     {
+        if(!(new ToDoListController)->toDoListBelongsToUser($toDoListId)) {
+            return response()->json(['error' => 'Not Authorised'], 401);
+        }
+
+        if(!(new StepController)->stepBelongsToToDoList($toDoListId, $stepId)) {
+            return response()->json(['error' => 'Not Authorised'], 401);
+        }
+
         try {
             $task = Task::query()
                 ->select('id', 'name', 'description', 'state_id', 'step_id', 'order_in_steplist')
@@ -117,19 +142,19 @@ class TaskController extends Controller
 
         $task['links'] = [[
             'rel' => 'task',
-            'href' => "api/v1/todolist/$id/steps/$stepId/tasks/$id",
+            'href' => "api/v1/todolist/$toDoListId/steps/$stepId/tasks/$taskId",
             'action' => 'PUT'
         ],[
             'rel' => 'task',
-            'href' => "api/v1/todolist/$id/steps/$stepId/tasks/$id",
+            'href' => "api/v1/todolist/$toDoListId/steps/$stepId/tasks/$taskId",
             'action' => 'DELETE'
         ],[
             'rel' => 'tasks',
-            'href' => "api/v1/todolist/$id/steps/$stepId/tasks",
+            'href' => "api/v1/todolist/$toDoListId/steps/$stepId/tasks",
             'action' => 'GET'
         ] ,[
             'rel' => 'step',
-            'href' => "api/v1/todolist/$id/steps/$stepId",
+            'href' => "api/v1/todolist/$toDoListId/steps/$stepId",
             'action' => 'GET'
         ]];
         return response()->json($task);
@@ -146,6 +171,14 @@ class TaskController extends Controller
      */
     public function update(Request $request, $toDoListId, $stepId, $id)
     {
+        if(!(new ToDoListController)->toDoListBelongsToUser($toDoListId)) {
+            return response()->json(['error' => 'Not Authorised'], 401);
+        }
+
+        if(!(new StepController)->stepBelongsToToDoList($toDoListId, $stepId)) {
+            return response()->json(['error' => 'Not Authorised'], 401);
+        }
+
         try {
             $task = Task::find($id);
         } catch (\Exception $e) {
@@ -203,6 +236,14 @@ class TaskController extends Controller
      */
     public function destroy($toDoListId, $stepId, $id)
     {
+        if(!(new ToDoListController)->toDoListBelongsToUser($toDoListId)) {
+            return response()->json(['error' => 'Not Authorised'], 401);
+        }
+
+        if(!(new StepController)->stepBelongsToToDoList($toDoListId, $stepId)) {
+            return response()->json(['error' => 'Not Authorised'], 401);
+        }
+
         try {
             $task = Task::find($id);
         } catch (\Exception $e) {

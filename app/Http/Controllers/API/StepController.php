@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Step;
 use App\Task;
+use App\Todolist;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\URL;
@@ -25,6 +26,10 @@ class StepController extends Controller
      */
     public function index($toDoListId)
     {
+        if(!(new ToDoListController)->toDoListBelongsToUser($toDoListId)) {
+            return response()->json(['error' => 'Not Authorised'], 401);
+        }
+
         try {
             $steps = Step::query()
                 ->select('id', 'name', 'description', 'todolist_id', 'order_in_todolist')
@@ -56,6 +61,10 @@ class StepController extends Controller
      */
     public function store(Request $request, $toDoListId)
     {
+        if(!(new ToDoListController)->toDoListBelongsToUser($toDoListId)) {
+            return response()->json(['error' => 'Not Authorised'], 401);
+        }
+
         $lastStep = Step::query()->where('todolist_id', $toDoListId)->max('order_in_todolist');
 
         $step = new Step([
@@ -96,8 +105,12 @@ class StepController extends Controller
      */
     public function show($toDoListId, $id)
     {
+        if(!(new ToDoListController)->toDoListBelongsToUser($toDoListId)) {
+            return response()->json(['error' => 'Not Authorised'], 401);
+        }
+
         try { $step = Step::query() ->select('id', 'name', 'description', 'todolist_id', 'order_in_todolist')
-                ->where('id', '=', $id)
+                ->where('id', '=', $id)->where('todolist_id', $toDoListId)
                 ->first();
         } catch (\Exception $e) {
             // Log this
@@ -150,6 +163,10 @@ class StepController extends Controller
      */
     public function update(Request $request, $toDoListId, $id)
     {
+        if(!(new ToDoListController)->toDoListBelongsToUser($toDoListId)) {
+            return response()->json(['error' => 'Not Authorised'], 401);
+        }
+
         try {
             $step = Step::find($id);
         } catch (\Exception $e) {
@@ -158,6 +175,10 @@ class StepController extends Controller
 
         if(!$step) {
             return response()->json('Resource not found', 404);
+        }
+
+        if($step->todolist_id !== $toDoListId) {
+            return response()->json(['error' => 'Not Authorised'], 401);
         }
 
         $step->name = $request->input('name');
@@ -210,6 +231,10 @@ class StepController extends Controller
      */
     public function destroy($toDoListId, $id)
     {
+        if(!(new ToDoListController)->toDoListBelongsToUser($toDoListId)) {
+            return response()->json(['error' => 'Not Authorised'], 401);
+        }
+
         try {
             $step = Step::find($id);
         } catch (\Exception $e) {
@@ -218,6 +243,10 @@ class StepController extends Controller
 
         if(!$step) {
             return response()->json('Resource not found', 404);
+        }
+
+        if($step->todolist_id !== $toDoListId) {
+            return response()->json(['error' => 'Not Authorised'], 401);
         }
 
         try {
@@ -236,5 +265,19 @@ class StepController extends Controller
         $stepInfo->msg = 'To Do List item deleted successfully';
 
         return response()->json($stepInfo);
+    }
+
+    function stepBelongsToToDoList($toDoListId, $stepId) {
+        try {
+            $step = Step::find($stepId);
+        } catch (\Exception $e) {
+            return response()->json('Something went wrong', 500);
+        }
+
+        if($step['todolist_id'] == $toDoListId) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

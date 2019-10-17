@@ -108,7 +108,7 @@ class ToDoListController extends Controller
             return response()->json('Resource not found', 404);
         }
 
-        if(!$this->toDoListBelongsToUser($toDoListItem->user_id)) {
+        if(!$this->todolistbelongstouser($id)) {
             return response()->json(['error' => 'Not Authorised'], 401);
         }
 
@@ -157,7 +157,7 @@ class ToDoListController extends Controller
             return response()->json('Resource not found', 404);
         }
 
-        if(!$this->toDoListBelongsToUser($toDoList->user_id)) {
+        if(!$this->todolistbelongstouser($id)) {
             return response()->json(['error' => 'Not Authorised'], 401);
         }
 
@@ -225,7 +225,7 @@ class ToDoListController extends Controller
             return response()->json('Resource not found', 404);
         }
 
-        if(!$this->toDoListBelongsToUser($toDoList->user_id)) {
+        if(!$this->toDoListBelongsToUser($id)) {
             return response()->json(['error' => 'Not Authorised'], 401);
         }
 
@@ -244,7 +244,13 @@ class ToDoListController extends Controller
     }
 
     public function toDoListBelongsToUser($id) {
-        if(Auth::id() !== $id) {
+        try {
+            $toDoList = Todolist::find($id);
+        } catch (\Exception $e) {
+            return response()->json('Something went wrong', 500);
+        }
+
+        if(Auth::id() !== $toDoList->user_id) {
             return false;
         } else {
             return true;
