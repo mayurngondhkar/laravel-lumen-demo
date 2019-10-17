@@ -26,6 +26,7 @@ $router->group(['prefix' => 'api/v1/todolists'], function () use ($router) {
         $router->group(['prefix' => '{stepId}/tasks'], function () use ($router) {
             $router->get('',  ['uses' => 'API\TaskController@index']);
             $router->get('{taskId}',  ['uses' => 'API\TaskController@show']);
+            $router->put('{taskId}',  ['uses' => 'API\TaskController@update']);
         });
     });
 });

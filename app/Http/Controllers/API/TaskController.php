@@ -5,13 +5,14 @@ namespace App\Http\Controllers\API;
 use App\Task;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 
 class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index($toDoListId, $stepId)
     {
@@ -43,8 +44,8 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -55,7 +56,7 @@ class TaskController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id, $stepId, $taskId)
     {
@@ -84,20 +85,65 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $toDoListId
+     * @param $stepId
+     * @param int $id
+     * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $toDoListId, $stepId, $id)
     {
-        //
+        try {
+            $task = Task::find($id);
+        } catch (\Exception $e) {
+            return response()->json('Resource not found', 404);
+        }
+
+        if(!$task) {
+            return response()->json('Resource not found', 404);
+        }
+
+        $task->name = $request->input('name');
+        $task->description = $request->input('description');
+        $task->state_id = $request->input('state_id');
+        $task->order_in_steplist = $request->input('order_in_steplist');
+
+        try {
+            $blah = $task->save();
+        } catch (\Exception $e) {
+            // Log exception
+            return response()->json('Task item not saved', 500);
+        }
+        try {
+            $savedTask = Task::query()
+                ->select('id', 'name', 'description','state_id', 'step_id', 'order_in_steplist')
+                ->where('id', $id)
+                ->first();
+        } catch (\Exception $e) {
+            // Log this
+            return response()->json('Something Went Wrong!', 500);
+        }
+
+        $savedTask->msg = 'Task Updated';
+        $savedTask->view_step = [
+            'rel' => 'step',
+            'href' => "api/v1/todolist/$toDoListId/steps/$stepId",
+            'action' => 'GET'
+        ];
+        $savedTask->view_tasks = [
+            'rel' => 'task',
+            'href' => "api/v1/todolist/$toDoListId/steps/$stepId/tasks",
+            'action' => 'GET'
+        ];
+
+        return response()->json($savedTask);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy($id)
     {
