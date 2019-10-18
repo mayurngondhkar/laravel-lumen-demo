@@ -250,6 +250,10 @@ class ToDoListController extends Controller
             return response()->json('Something went wrong', 500);
         }
 
+        if(!$toDoList) {
+            return false;
+        }
+
         if(Auth::id() !== $toDoList->user_id) {
             return false;
         } else {
