@@ -68,6 +68,12 @@ class StepController extends Controller
             return response()->json(['error' => 'Not Authorised'], 401);
         }
 
+        $this->validate($request, [
+            'name' => 'required|min:5|max:50',
+            'description' => 'required|min:5|max:255'
+        ]);
+
+
         $lastStep = Step::query()->where('todolist_id', $toDoListId)->max('order_in_todolist');
 
         $step = new Step([
@@ -187,6 +193,11 @@ class StepController extends Controller
         if($step->todolist_id !== $toDoListId) {
             return response()->json(['error' => 'Not Authorised'], 401);
         }
+
+        $this->validate($request, [
+            'name' => 'required|min:5|max:50',
+            'description' => 'required|min:5|max:255'
+        ]);
 
         $step->name = $request->input('name');
         $step->description = $request->input('description');

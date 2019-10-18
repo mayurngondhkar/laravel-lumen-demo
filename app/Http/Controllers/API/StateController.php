@@ -49,6 +49,10 @@ class StateController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'name' => 'required|min:5|max:50',
+        ]);
+
         $state = new State([
             'name' => $request->input('name'),
         ]);
@@ -111,6 +115,10 @@ class StateController extends Controller
         if(!$state) {
             return response()->json('Resource not found', 404);
         }
+
+        $this->validate($request, [
+            'name' => 'required|min:5|max:50',
+        ]);
 
         $state->name = $request->input('name');
 

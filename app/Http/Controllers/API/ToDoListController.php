@@ -52,6 +52,11 @@ class ToDoListController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'name' => 'required|min:5|max:50',
+            'description' => 'required|min:5|max:255'
+        ]);
+
         $lastOrderedTodoList = Todolist::max('order');
 
         $toDoList = new Todolist([
@@ -163,6 +168,11 @@ class ToDoListController extends Controller
         if(!$this->todolistbelongstouser($id)) {
             return response()->json(['error' => 'Not Authorised'], 401);
         }
+
+        $this->validate($request, [
+            'name' => 'required|min:5|max:50',
+            'description' => 'required|min:5|max:255'
+        ]);
 
         $toDoList->name = $request->input('name');
         $toDoList->description = $request->input('description');

@@ -77,6 +77,11 @@ class TaskController extends Controller
             return response()->json(['error' => 'Not Authorised'], 401);
         }
 
+        $this->validate($request, [
+            'name' => 'required|min:5|max:50',
+            'description' => 'required|min:5|max:255'
+        ]);
+
         $lastTask = Task::query()->where('step_id', $stepId)->max('order_in_steplist');
 
         $task = new Task([
@@ -193,6 +198,11 @@ class TaskController extends Controller
         if(!$task) {
             return response()->json('Resource not found', 404);
         }
+
+        $this->validate($request, [
+            'name' => 'required|min:5|max:50',
+            'description' => 'required|min:5|max:255'
+        ]);
 
         $task->name = $request->input('name');
         $task->description = $request->input('description');
