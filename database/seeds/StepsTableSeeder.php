@@ -17,6 +17,7 @@ class StepsTableSeeder extends Seeder
             'description' => 'Step Description ' . Str::random(5),
             'todolist_id' => '1',
             'order_in_todolist' => 1,
+            'user_id' => '1'
         ]);
         $step->save();
 
@@ -25,6 +26,7 @@ class StepsTableSeeder extends Seeder
             'description' => 'Step Description ' . Str::random(5),
             'todolist_id' => '1',
             'order_in_todolist' => 2,
+            'user_id' => '1'
         ]);
 
         $step->save();
@@ -33,6 +35,7 @@ class StepsTableSeeder extends Seeder
             'description' => 'Step Description ' . Str::random(5),
             'todolist_id' => '2',
             'order_in_todolist' => 1,
+            'user_id' => '2'
         ]);
         $step->save();
 
@@ -41,6 +44,7 @@ class StepsTableSeeder extends Seeder
             'description' => 'Step Description ' . Str::random(5),
             'todolist_id' => '4',
             'order_in_todolist' => 4,
+            'user_id' => '2'
         ]);
         $step->save();
 
@@ -49,6 +53,7 @@ class StepsTableSeeder extends Seeder
             'description' => 'Step Description ' . Str::random(5),
             'todolist_id' => '5',
             'order_in_todolist' => 5,
+            'user_id' => '2'
         ]);
         $step->save();
     }

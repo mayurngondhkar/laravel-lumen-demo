@@ -57,6 +57,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function todolist() {
+        return $this->hasMany(Todolist::class);
+    }
+
+    public function step() {
+        return $this->hasMany(Step::class);
+    }
+
+    public function task() {
         return $this->hasMany(Task::class);
     }
 }

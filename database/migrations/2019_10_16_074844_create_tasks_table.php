@@ -19,6 +19,7 @@ class CreateTasksTable extends Migration
             $table->string('description');
             $table->string('state_id');
             $table->string('step_id');
+            $table->integer('user_id');
             $table->integer('order_in_steplist');
             $table->timestamps();
             $table->softDeletes();

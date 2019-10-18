@@ -19,6 +19,7 @@ class CreateStepsTable extends Migration
             $table->string('description');
             $table->string('todolist_id');
             $table->integer('order_in_todolist');
+            $table->integer('user_id');
             $table->timestamps();
             $table->softDeletes();
         });
