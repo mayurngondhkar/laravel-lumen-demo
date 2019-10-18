@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\ToDoListCreatedEvent;
 use App\Step;
 use App\Todolist;
 use Illuminate\Http\Request;
@@ -66,6 +67,8 @@ class ToDoListController extends Controller
             // Log exception
             return response()->json('To Do List item not saved', 500);
         }
+
+        event(new ToDoListCreatedEvent($toDoList));
 
         unset($toDoList['updated_at']);
         $toDoList->msg = 'Item created successfully';

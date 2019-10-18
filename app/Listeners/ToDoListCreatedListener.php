@@ -3,8 +3,9 @@
 namespace App\Listeners;
 
 use App\Events\ToDoListCreatedEvent;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class ToDoListCreatedListener
+class ToDoListCreatedListener implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -24,6 +25,6 @@ class ToDoListCreatedListener
      */
     public function handle(ToDoListCreatedEvent $event)
     {
-        //
+        $toDoList = $event->toDoList;
     }
 }

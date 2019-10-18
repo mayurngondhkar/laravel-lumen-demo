@@ -3,8 +3,9 @@
 namespace App\Listeners;
 
 use App\Events\TaskCreatedEvent;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class TaskCreatedListener
+class TaskCreatedListener implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -24,6 +25,6 @@ class TaskCreatedListener
      */
     public function handle(TaskCreatedEvent $event)
     {
-        //
+        $task = $event->task;
     }
 }

@@ -3,8 +3,9 @@
 namespace App\Listeners;
 
 use App\Events\StepCreatedEvent;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class StepCreatedListener
+class StepCreatedListener implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -24,6 +25,6 @@ class StepCreatedListener
      */
     public function handle(StepCreatedEvent $event)
     {
-        //
+        $step = $event->step;
     }
 }

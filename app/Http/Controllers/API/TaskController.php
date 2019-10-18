@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\TaskCreatedEvent;
 use App\Step;
 use App\Task;
 use Illuminate\Http\Request;
@@ -93,6 +94,8 @@ class TaskController extends Controller
             // Log error
             return response()->json('Something Went Wrong!', 500);
         }
+
+        event(new TaskCreatedEvent($task));
 
         unset($task['updated_at']);
 

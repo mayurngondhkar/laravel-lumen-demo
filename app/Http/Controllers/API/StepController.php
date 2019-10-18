@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Events\StepCreatedEvent;
 use App\Step;
 use App\Task;
 use App\Todolist;
@@ -80,6 +81,8 @@ class StepController extends Controller
             // Log error
             return response()->json('Something Went Wrong!', 500);
         }
+
+        event(new StepCreatedEvent($step));
 
         unset($step['updated_at']);
 
