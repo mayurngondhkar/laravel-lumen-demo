@@ -15,5 +15,14 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\ExampleEvent' => [
             'App\Listeners\ExampleListener',
         ],
+        'App\Events\TaskCreatedEvent' => [
+            'App\Listeners\TaskCreatedListener',
+        ],
+        'App\Events\StepCreatedEvent' => [
+            'App\Listeners\StepCreatedListener',
+        ],
+        'App\Events\ToDoListCreatedEvent' => [
+            'App\Listeners\ToDoListCreatedListener',
+        ],
     ];
 }
