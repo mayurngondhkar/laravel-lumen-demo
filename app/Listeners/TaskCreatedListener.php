@@ -4,8 +4,10 @@ namespace App\Listeners;
 
 use App\EmailLog;
 use App\Events\TaskCreatedEvent;
+use App\Mail\TaskCreated;
 use App\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Mail;
 
 class TaskCreatedListener implements ShouldQueue
 {
@@ -46,5 +48,7 @@ class TaskCreatedListener implements ShouldQueue
         ]);
 
         $email->save();
+
+        Mail::to($user)->send(new TaskCreated($task));
     }
 }
