@@ -4,8 +4,11 @@ namespace App\Listeners;
 
 use App\EmailLog;
 use App\Events\StepCreatedEvent;
+use App\Mail\StepCreated;
+use App\Mail\ToDoListCreated;
 use App\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Mail;
 
 class StepCreatedListener implements ShouldQueue
 {
@@ -46,5 +49,7 @@ class StepCreatedListener implements ShouldQueue
         ]);
 
         $email->save();
+
+        Mail::to($user)->send(new StepCreated($step));
     }
 }
