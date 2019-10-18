@@ -142,11 +142,7 @@ class ToDoListController extends Controller
         ]];
 
 
-        if ($toDoListItem) {
-            return response()->json($toDoListItem, 200);
-        } else {
-            return ;
-        }
+        return response()->json($toDoListItem, 200);
     }
 
     /**
