@@ -4,8 +4,10 @@ namespace App\Listeners;
 
 use App\EmailLog;
 use App\Events\ToDoListCreatedEvent;
+use App\Mail\ToDoListCreated;
 use App\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Mail;
 
 class ToDoListCreatedListener implements ShouldQueue
 {
@@ -46,5 +48,8 @@ class ToDoListCreatedListener implements ShouldQueue
         ]);
 
         $email->save();
+
+        Mail::to($user)->send(new ToDoListCreated($toDoList));
+
     }
 }
