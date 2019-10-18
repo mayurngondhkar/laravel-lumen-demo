@@ -13,10 +13,11 @@ class ToDoListCreated extends Mailable
     use Queueable, SerializesModels;
 
     public $toDoList;
+
     /**
      * Create a new message instance.
      *
-     * @return void
+     * @param Todolist $todolist
      */
     public function __construct(Todolist $todolist)
     {

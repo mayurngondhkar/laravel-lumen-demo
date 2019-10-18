@@ -13,10 +13,11 @@ class TaskCreated extends Mailable
     use Queueable, SerializesModels;
 
     public $task;
+
     /**
      * Create a new message instance.
      *
-     * @return void
+     * @param Task $task
      */
     public function __construct(Task $task)
     {

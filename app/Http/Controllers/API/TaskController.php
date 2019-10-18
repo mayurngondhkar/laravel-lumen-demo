@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 use Auth;
+use Illuminate\Validation\ValidationException;
 
 class TaskController extends Controller
 {
@@ -66,6 +67,7 @@ class TaskController extends Controller
      * @param $toDoListId
      * @param $stepId
      * @return Response
+     * @throws ValidationException
      */
     public function store(Request $request, $toDoListId, $stepId)
     {
@@ -123,7 +125,9 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param $toDoListId
+     * @param $stepId
+     * @param $taskId
      * @return Response
      */
     public function show($toDoListId, $stepId, $taskId)
@@ -178,6 +182,7 @@ class TaskController extends Controller
      * @param $stepId
      * @param int $id
      * @return Response
+     * @throws ValidationException
      */
     public function update(Request $request, $toDoListId, $stepId, $id)
     {
