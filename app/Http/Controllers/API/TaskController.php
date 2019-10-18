@@ -8,6 +8,7 @@ use App\Task;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
+use Auth;
 
 class TaskController extends Controller
 {
@@ -83,7 +84,8 @@ class TaskController extends Controller
             'description' => $request->input('description'),
             'state_id' => $request->input('state_id'),
             'order_in_steplist' => $lastTask + 1,
-            'step_id' => $stepId
+            'step_id' => $stepId,
+            'user_id' => Auth::user()->id
         ]);
 
         $task->save();

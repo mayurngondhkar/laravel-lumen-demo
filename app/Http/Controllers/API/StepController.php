@@ -6,9 +6,11 @@ use App\Events\StepCreatedEvent;
 use App\Step;
 use App\Task;
 use App\Todolist;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\URL;
+use Auth;
 
 class StepController extends Controller
 {
@@ -72,7 +74,8 @@ class StepController extends Controller
             'name' => $request->input('name'),
             'description' => $request->input('description'),
             'order_in_todolist' => $lastStep + 1,
-            'todolist_id' => $toDoListId
+            'todolist_id' => $toDoListId,
+            'user_id' => Auth::user()->id
         ]);
 
         try {
@@ -83,6 +86,7 @@ class StepController extends Controller
         }
 
         event(new StepCreatedEvent($step));
+        unset($step['user_id']);
 
         unset($step['updated_at']);
 
