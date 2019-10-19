@@ -28,7 +28,7 @@ class StateController extends Controller
         try {
             $states = State::query()->select('id', 'name')->get();
         } catch (\Exception $e) {
-            return response()->json('Something Went Wrong!', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         foreach ($states as $key => $value) {
@@ -63,7 +63,7 @@ class StateController extends Controller
             $state->save();
         } catch (\Exception $e) {
             // Log exception
-            return response()->json('To Do List item not saved', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         unset($state['updated_at']);
@@ -87,11 +87,11 @@ class StateController extends Controller
             ->first();
         } catch (\Exception $e) {
             // Log this
-            return response()->json('Something Went Wrong!', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         if(!$state) {
-            return response()->json('Resource not found', 404);
+            return response()->json(['error' => 'Resource not found'], 404);
         }
 
         $state['links'] = ['rel' => 'state', 'href' => 'api/v1/states', 'action' => 'GET'];
@@ -112,11 +112,11 @@ class StateController extends Controller
         try {
             $state = State::find($id);
         } catch (\Exception $e) {
-            return response()->json('Something went wrong', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         if(!$state) {
-            return response()->json('Resource not found', 404);
+            return response()->json(['error' => 'Resource not found'], 404);
         }
 
         $this->validate($request, [
@@ -129,7 +129,7 @@ class StateController extends Controller
             $state->save();
         } catch (\Exception $e) {
             // Log exception
-            return response()->json('Something went wrong', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         try {
@@ -137,7 +137,7 @@ class StateController extends Controller
                 ->select('id', 'name')->where('id', $id)->first();
         } catch (\Exception $e) {
             // Log this
-            return response()->json('Something Went Wrong!', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         unset($updatedState['created_at']);
@@ -160,18 +160,18 @@ class StateController extends Controller
         try {
             $state = State::find($id);
         } catch (\Exception $e) {
-            return response()->json('Something went wrong', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         if(!$state) {
-            return response()->json('Resource not found', 404);
+            return response()->json(['error' => 'Resource not found'], 404);
         }
 
         try {
             $state->delete();
         } catch (\Exception $e) {
             // Log exception
-            return response()->json('State not deleted', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         $stateInfo = new \stdClass();

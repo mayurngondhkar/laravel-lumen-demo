@@ -42,7 +42,7 @@ class TaskController extends Controller
                 ->where('step_id', $stepId)
                 ->get();
         } catch (\Exception $e) {
-            return response()->json('Something Went Wrong!', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         foreach ($tasks as $key => $value) {
@@ -101,7 +101,7 @@ class TaskController extends Controller
             $task->save();
         } catch (\Exception $e) {
             // Log error
-            return response()->json('Something Went Wrong!', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         event(new TaskCreatedEvent($task));
@@ -147,11 +147,11 @@ class TaskController extends Controller
                 ->first();
         } catch (\Exception $e) {
             // Log this
-            return response()->json('Something Went Wrong!', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         if(!$task) {
-            return response()->json('Resource not found', 404);
+            return response()->json(['error' => 'Resource not found'], 404);
         }
 
         $task['links'] = [[
@@ -197,11 +197,11 @@ class TaskController extends Controller
         try {
             $task = Task::find($id);
         } catch (\Exception $e) {
-            return response()->json('Something went wrong', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         if(!$task) {
-            return response()->json('Resource not found', 404);
+            return response()->json(['error' => 'Resource not found'], 404);
         }
 
         $this->validate($request, [
@@ -218,7 +218,7 @@ class TaskController extends Controller
             $blah = $task->save();
         } catch (\Exception $e) {
             // Log exception
-            return response()->json('Task item not saved', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
         try {
             $savedTask = Task::query()
@@ -227,7 +227,7 @@ class TaskController extends Controller
                 ->first();
         } catch (\Exception $e) {
             // Log this
-            return response()->json('Something Went Wrong!', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         $savedTask->msg = 'Task Updated';
@@ -267,18 +267,18 @@ class TaskController extends Controller
         try {
             $task = Task::find($id);
         } catch (\Exception $e) {
-            return response()->json('Something went wrong', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         if(!$task) {
-            return response()->json('Resource not found', 404);
+            return response()->json(['error' => 'Resource not found'], 404);
         }
 
         try {
             $task->delete();
         } catch (\Exception $e) {
             // Log exception
-            return response()->json('Task not deleted', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         $taskInfo = new \stdClass();

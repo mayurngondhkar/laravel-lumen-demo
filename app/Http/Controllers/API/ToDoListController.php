@@ -33,7 +33,7 @@ class ToDoListController extends Controller
         try {
             $toDoLists = Todolist::query()->select('id', 'name', 'description', 'order', 'user_id')->get();
         } catch (\Exception $e) {
-            return response()->json('Something Went Wrong!', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         foreach ($toDoLists as $key => $value) {
@@ -73,7 +73,7 @@ class ToDoListController extends Controller
             $toDoList->save();
         } catch (\Exception $e) {
             // Log exception
-            return response()->json('To Do List item not saved', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         event(new ToDoListCreatedEvent($toDoList));
@@ -100,7 +100,7 @@ class ToDoListController extends Controller
                 ->first();
         } catch (\Exception $e) {
             // Log this
-            return response()->json('Something Went Wrong!', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
 
@@ -112,11 +112,11 @@ class ToDoListController extends Controller
                 ->get();
         } catch (\Exception $e) {
             // Log this
-            return response()->json('Something Went Wrong!', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         if(!$toDoListItem) {
-            return response()->json('Resource not found', 404);
+            return response()->json(['error' => 'Resource not found'], 404);
         }
 
         if(!$this->todolistbelongstouser($id)) {
@@ -158,11 +158,11 @@ class ToDoListController extends Controller
         try {
             $toDoList = Todolist::find($id);
         } catch (\Exception $e) {
-            return response()->json('Something went wrong', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         if(!$toDoList) {
-            return response()->json('Resource not found', 404);
+            return response()->json(['error' => 'Resource not found'], 404);
         }
 
         if(!$this->todolistbelongstouser($id)) {
@@ -182,7 +182,7 @@ class ToDoListController extends Controller
             $toDoList->save();
         } catch (\Exception $e) {
             // Log exception
-            return response()->json('To Do List item not saved', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         try {
@@ -192,7 +192,7 @@ class ToDoListController extends Controller
                 ->first();
         } catch (\Exception $e) {
             // Log this
-            return response()->json('Something Went Wrong!', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         unset($toDoListItem['created_at']);
@@ -231,11 +231,11 @@ class ToDoListController extends Controller
         try {
             $toDoList = Todolist::find($id);
         } catch (\Exception $e) {
-            return response()->json('Something went wrong', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         if(!$toDoList) {
-            return response()->json('Resource not found', 404);
+            return response()->json(['error' => 'Resource not found'], 404);
         }
 
         if(!$this->toDoListBelongsToUser($id)) {
@@ -244,14 +244,14 @@ class ToDoListController extends Controller
 
         // Delete all steps for the task
         if(!(new StepController)->destroyStepsAndTasksOfToDoList($id)) {
-            return response()->json(['error' => 'Something went wrong'], 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         try {
             $toDoList->delete();
         } catch (\Exception $e) {
             // Log exception
-            return response()->json('To Do List item not deleted', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         $toDoListInfo = new Object_();
@@ -265,7 +265,7 @@ class ToDoListController extends Controller
         try {
             $toDoList = Todolist::find($id);
         } catch (\Exception $e) {
-            return response()->json('Something went wrong', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         if(!$toDoList) {

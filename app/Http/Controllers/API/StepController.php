@@ -40,7 +40,7 @@ class StepController extends Controller
                 ->select('id', 'name', 'description', 'todolist_id', 'order_in_todolist')
                 ->where('todolist_id', $toDoListId)->get();
         } catch (\Exception $e) {
-            return response()->json('Something Went Wrong!', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         foreach ($steps as $key => $value) {
@@ -91,7 +91,7 @@ class StepController extends Controller
             $step->save();
         } catch (\Exception $e) {
             // Log error
-            return response()->json('Something Went Wrong!', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         event(new StepCreatedEvent($step));
@@ -130,7 +130,7 @@ class StepController extends Controller
                 ->first();
         } catch (\Exception $e) {
             // Log this
-            return response()->json('Something Went Wrong!', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         try {
@@ -141,11 +141,11 @@ class StepController extends Controller
                 ->get();
         } catch (\Exception $e) {
             // Log this
-            return response()->json('Something Went Wrong!', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         if(!$step) {
-            return response()->json('Resource not found', 404);
+            return response()->json(['error' => 'Resource not found'], 404);
         }
 
         $step['links'] = [
@@ -187,11 +187,11 @@ class StepController extends Controller
         try {
             $step = Step::find($id);
         } catch (\Exception $e) {
-            return response()->json('Something went wrong', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         if(!$step) {
-            return response()->json('Resource not found', 404);
+            return response()->json(['error' => 'Resource not found'], 404);
         }
 
         if($step->todolist_id !== $toDoListId) {
@@ -211,7 +211,7 @@ class StepController extends Controller
             $step->save();
         } catch (\Exception $e) {
             // Log exception
-            return response()->json('To Do List item not saved', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
         try {
             $savedStep = Step::query()
@@ -220,7 +220,7 @@ class StepController extends Controller
                 ->first();
         } catch (\Exception $e) {
             // Log this
-            return response()->json('Something Went Wrong!', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         $savedStep->msg = 'To Do Item Updated';
@@ -260,11 +260,11 @@ class StepController extends Controller
         try {
             $step = Step::find($id);
         } catch (\Exception $e) {
-            return response()->json('Something went wrong', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         if(!$step) {
-            return response()->json('Resource not found', 404);
+            return response()->json(['error' => 'Resource not found'], 404);
         }
 
         if($step->todolist_id !== $toDoListId) {
@@ -275,7 +275,7 @@ class StepController extends Controller
             $step->delete();
         } catch (\Exception $e) {
             // Log exception
-            return response()->json('To Do List item not deleted', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         $stepInfo = new \stdClass();
@@ -293,7 +293,7 @@ class StepController extends Controller
         try {
             $step = Step::find($stepId);
         } catch (\Exception $e) {
-            return response()->json('Something went wrong', 500);
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
         }
 
         if($step['todolist_id'] == $toDoListId) {
