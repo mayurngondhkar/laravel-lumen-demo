@@ -46,11 +46,11 @@ class StepController extends Controller
         foreach ($steps as $key => $value) {
             $steps[$key]->links = [[
                 'ref' => 'step',
-                'href' => "api/v1/todolists/$toDoListId/steps/$value->id",
+                'href' => "/api/v1/todolists/$toDoListId/steps/$value->id",
                 'action' => 'GET'
             ], [
                 'ref' => 'toDoList',
-                'href' => "api/v1/todolists/$toDoListId",
+                'href' => "/api/v1/todolists/$toDoListId",
                 'action' => 'GET'
             ]];
         }
@@ -105,11 +105,11 @@ class StepController extends Controller
 
         $step['links'] = [[
             'rel' => 'todolist',
-            'href' => "api/v1/todolist/$step->todolist_id",
+            'href' => "/api/v1/todolist/$step->todolist_id",
             'action' => 'GET'
         ], [
             'rel' => 'step',
-            'href' => "api/v1/todolist/$step->todolist_id/steps",
+            'href' => "/api/v1/todolist/$step->todolist_id/steps",
             'action' => 'GET'
         ]];
 
@@ -155,19 +155,19 @@ class StepController extends Controller
         $step['links'] = [
             [
                  'ref' => 'step',
-                 'href' => "api/v1/todolists/$toDoListId/steps/$id",
+                 'href' => "/api/v1/todolists/$toDoListId/steps/$id",
                  'action' => 'PUT'
             ], [
                  'ref' => 'step',
-                 'href' => "api/v1/todolists/$toDoListId/steps/$id",
+                 'href' => "/api/v1/todolists/$toDoListId/steps/$id",
                  'action' => 'DELETE'
             ], [
                 'rel' => 'tasks',
-                'href' => "api/v1/todolist/$toDoListId/steps/$id/tasks",
+                'href' => "/api/v1/todolist/$toDoListId/steps/$id/tasks",
                 'action' => 'GET'
             ], [
                 'rel' => 'todolist',
-                'href' => "api/v1/todolist/$step->todolist_id",
+                'href' => "/api/v1/todolist/$step->todolist_id",
                 'action' => 'GET'
         ]];
 
@@ -230,19 +230,19 @@ class StepController extends Controller
         $savedStep->msg = 'To Do Item Updated';
         $savedStep['links'] = [[
             'rel' => 'todolist',
-            'href' => "api/v1/todolist/$toDoListId",
+            'href' => "/api/v1/todolist/$toDoListId",
             'action' => 'GET'
         ], [
             'rel' => 'step',
-            'href' => "api/v1/todolist/$toDoListId/steps/$id",
+            'href' => "/api/v1/todolist/$toDoListId/steps/$id",
             'action' => 'GET'
         ],[
             'rel' => 'step',
-            'href' => "api/v1/todolist/$toDoListId/steps/$id",
+            'href' => "/api/v1/todolist/$toDoListId/steps/$id",
             'action' => 'PUT'
         ], [
             'rel' => 'tasks',
-            'href' => "api/v1/todolist/$toDoListId/steps/$id/tasks",
+            'href' => "/api/v1/todolist/$toDoListId/steps/$id/tasks",
             'action' => 'GET'
         ]];
 
@@ -285,7 +285,7 @@ class StepController extends Controller
         $stepInfo = new \stdClass();
         $stepInfo->view_toDoListItem = [
             'rel' => 'todolist',
-            'href' => "api/v1/todolist/$step->todolist_id",
+            'href' => "/api/v1/todolist/$step->todolist_id",
             'action' => 'GET'
         ];
         $stepInfo->msg = 'To Do List item deleted successfully';

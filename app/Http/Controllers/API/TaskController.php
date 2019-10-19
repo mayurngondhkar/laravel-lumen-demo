@@ -48,11 +48,11 @@ class TaskController extends Controller
         foreach ($tasks as $key => $value) {
             $tasks[$key]->links = [[
                 'ref' => 'task',
-                'href' => "api/v1/todolists/$toDoListId/steps/$stepId/tasks/$value->id",
+                'href' => "/api/v1/todolists/$toDoListId/steps/$stepId/tasks/$value->id",
                 'action' => 'GET'
             ], [
                 'rel' => 'step',
-                'href' => "api/v1/todolist/$toDoListId/steps/$stepId",
+                'href' => "/api/v1/todolist/$toDoListId/steps/$stepId",
                 'action' => 'GET'
             ]];
         }
@@ -115,11 +115,11 @@ class TaskController extends Controller
         $task->msg = 'Task Created';
         $task['links'] = [[
             'rel' => 'step',
-            'href' => "api/v1/todolist/$toDoListId/steps/$stepId",
+            'href' => "/api/v1/todolist/$toDoListId/steps/$stepId",
             'action' => 'GET'
         ], [
             'rel' => 'tasks',
-            'href' => "api/v1/todolist/$toDoListId/steps/$stepId/tasks",
+            'href' => "/api/v1/todolist/$toDoListId/steps/$stepId/tasks",
             'action' => 'GET'
         ]];
 
@@ -160,19 +160,19 @@ class TaskController extends Controller
 
         $task['links'] = [[
             'rel' => 'task',
-            'href' => "api/v1/todolist/$toDoListId/steps/$stepId/tasks/$taskId",
+            'href' => "/api/v1/todolist/$toDoListId/steps/$stepId/tasks/$taskId",
             'action' => 'PUT'
         ],[
             'rel' => 'task',
-            'href' => "api/v1/todolist/$toDoListId/steps/$stepId/tasks/$taskId",
+            'href' => "/api/v1/todolist/$toDoListId/steps/$stepId/tasks/$taskId",
             'action' => 'DELETE'
         ],[
             'rel' => 'tasks',
-            'href' => "api/v1/todolist/$toDoListId/steps/$stepId/tasks",
+            'href' => "/api/v1/todolist/$toDoListId/steps/$stepId/tasks",
             'action' => 'GET'
         ] ,[
             'rel' => 'step',
-            'href' => "api/v1/todolist/$toDoListId/steps/$stepId",
+            'href' => "/api/v1/todolist/$toDoListId/steps/$stepId",
             'action' => 'GET'
         ]];
         return response()->json($task);
@@ -237,15 +237,15 @@ class TaskController extends Controller
         $savedTask->msg = 'Task Updated';
         $savedTask['links'] = [[
             'rel' => 'step',
-            'href' => "api/v1/todolist/$toDoListId/steps/$stepId",
+            'href' => "/api/v1/todolist/$toDoListId/steps/$stepId",
             'action' => 'GET'
         ], [
             'rel' => 'step',
-            'href' => "api/v1/todolist/$toDoListId/steps/$stepId",
+            'href' => "/api/v1/todolist/$toDoListId/steps/$stepId",
             'action' => 'PUT'
         ],[
             'rel' => 'tasks',
-            'href' => "api/v1/todolist/$toDoListId/steps/$stepId/tasks",
+            'href' => "/api/v1/todolist/$toDoListId/steps/$stepId/tasks",
             'action' => 'GET'
         ]];
 
@@ -288,7 +288,7 @@ class TaskController extends Controller
         $taskInfo = new \stdClass();
         $taskInfo->links = [
             'rel' => 'step',
-            'href' => "api/v1/todolist/$toDoListId/steps/$stepId",
+            'href' => "/api/v1/todolist/$toDoListId/steps/$stepId",
             'action' => 'GET'
         ];
         $taskInfo->msg = 'Task deleted successfully';

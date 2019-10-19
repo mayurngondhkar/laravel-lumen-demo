@@ -39,7 +39,7 @@ class ToDoListController extends Controller
         foreach ($toDoLists as $key => $value) {
             $toDoLists[$key]->links = [
                 'ref' => 'toDoList',
-                'href' => "api/v1/todolists/$value->id",
+                'href' => "/api/v1/todolists/$value->id",
                 'action' => 'GET'
             ];
         }
@@ -86,7 +86,7 @@ class ToDoListController extends Controller
 
         unset($toDoList['updated_at']);
         $toDoList->msg = 'Item created successfully';
-        $toDoList->links = ['rel' => 'todolist', 'href' => 'api/v1/todolist', 'action' => 'GET'];
+        $toDoList->links = ['rel' => 'todolist', 'href' => '/api/v1/todolist', 'action' => 'GET'];
 
         return response()->json($toDoList, 200);
     }
@@ -131,19 +131,19 @@ class ToDoListController extends Controller
 
         $toDoListItem['links'] = [[
             'ref' => 'toDoList',
-            'href' => "api/v1/todolists/$id",
+            'href' => "/api/v1/todolists/$id",
             'action' => 'PUT'
         ], [
             'ref' => 'toDoList',
-            'href' => "api/v1/todolists/$id",
+            'href' => "/api/v1/todolists/$id",
             'action' => 'DELETE'
         ], [
             'rel' => 'todolist',
-            'href' => 'api/v1/todolist',
+            'href' => '/api/v1/todolist',
             'action' => 'GET'
         ], [
             'rel' => 'steps',
-            'href' => "api/v1/todolist/$id/steps",
+            'href' => "/api/v1/todolist/$id/steps",
             'action' => 'GET'
         ]];
 
@@ -208,19 +208,19 @@ class ToDoListController extends Controller
         $toDoListItem->msg = 'To Do Item Updated';
         $toDoListItem['links'] = [[
             'ref' => 'toDoList',
-            'href' => "api/v1/todolists/$id",
+            'href' => "/api/v1/todolists/$id",
             'action' => 'PUT'
         ], [
             'ref' => 'toDoList',
-            'href' => "api/v1/todolists/$id",
+            'href' => "/api/v1/todolists/$id",
             'action' => 'DELETE'
         ], [
             'rel' => 'todolist',
-            'href' => 'api/v1/todolist',
+            'href' => '/api/v1/todolist',
             'action' => 'GET'
         ], [
             'rel' => 'steps',
-            'href' => "api/v1/todolist/$id/steps",
+            'href' => "/api/v1/todolist/$id/steps",
             'action' => 'GET'
         ]];
         return response()->json($toDoListItem, 200);
@@ -261,7 +261,7 @@ class ToDoListController extends Controller
         }
 
         $toDoListInfo = new Object_();
-        $toDoListInfo->links = ['rel' => 'todolist', 'href' => 'api/v1/todolist', 'action' => 'GET'];
+        $toDoListInfo->links = ['rel' => 'todolist', 'href' => '/api/v1/todolist', 'action' => 'GET'];
         $toDoListInfo->msg = 'To Do List item deleted successfully';
 
         return response()->json($toDoListInfo, 200);
