@@ -271,6 +271,11 @@ class StepController extends Controller
             return response()->json(['error' => 'Not Authorised'], 401);
         }
 
+        // Delete all tasks that belong to the step
+        if(!(new TaskController)->destroyTasksOfStep($id)) {
+            return response()->json(['error' => 'Something went wrong'], 500);
+        }
+
         try {
             $step->delete();
         } catch (\Exception $e) {
