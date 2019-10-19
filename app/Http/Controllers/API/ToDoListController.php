@@ -242,6 +242,11 @@ class ToDoListController extends Controller
             return response()->json(['error' => 'Not Authorised'], 401);
         }
 
+        // Delete all steps for the task
+        if(!(new StepController)->destroyStepsOfToDoList($id)) {
+            return response()->json(['error' => 'Something went wrong'], 500);
+        }
+
         try {
             $toDoList->delete();
         } catch (\Exception $e) {
