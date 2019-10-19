@@ -309,22 +309,13 @@ class StepController extends Controller
 
     public function destroyStepsAndTasksOfToDoList($toDoListId) {
 
-        // Delete all tasks that belong to steps that belong to a todolist
+        // Delete all Tasks that belong to Steps that belongs to a todolist
         $step_ids =  Step::query()->select('id')->where('todolist_id', $toDoListId)->get();
         foreach ($step_ids as $step_id) {
               if(!$this->destroy($toDoListId, $step_id['id'])) {
                 return false;
             }
         }
-
-        // Delete all steps that belong to a todolist
-        try {
-            Step::query()->where('todolist_id', $toDoListId)->delete();
-        } catch (\Exception $e) {
-            // Log exception
-            return false;
-        }
-
         return true;
     }
 }
