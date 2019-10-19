@@ -12,49 +12,29 @@ class TodolistTableSeeder extends Seeder
      */
     public function run()
     {
-        $todolist = new \App\Todolist([
-            'name' => 'Task Name ' . Str::random(10),
-            'description' => 'Task Description ' . Str::random(5),
-            'order' => 1,
-            'user_id' => 1,
-        ]);
-        $todolist->save();
+        $toDoOrderUserData = [
+            [1, 1],
+            [1, 2],
+            [1, 3],
+            [1, 4],
+            [1, 5],
+            [2, 1],
+            [2, 2],
+            [2, 3],
+            [2, 4],
+            [2, 5],
+        ];
+        foreach ($toDoOrderUserData as $datum) {
+            $this->createToDoListItem($datum[0], $datum[1]);
+        }
+    }
 
+    private function createToDoListItem($user_id, $order) {
         $todolist = new \App\Todolist([
             'name' => 'Task Name ' . Str::random(10),
             'description' => 'Task Description ' . Str::random(5),
-            'order' => 2,
-            'user_id' => 1,
-        ]);
-        $todolist->save();
-
-        $todolist = new \App\Todolist([
-            'name' => 'Task Name ' . Str::random(10),
-            'description' => 'Task Description ' . Str::random(5),
-            'order' => 3,
-            'user_id' => 1,
-        ]);
-        $todolist->save();
-
-        $todolist = new \App\Todolist([
-            'name' => 'Task Name ' . Str::random(10),
-            'description' => 'Task Description ' . Str::random(5),
-            'order' => 4,
-            'user_id' => 1,
-        ]);
-        $todolist->save();
-
-        $todolist = new \App\Todolist([
-            'name' => 'Task Name ' . Str::random(10),
-            'description' => 'Task Description ' . Str::random(5),
-            'order' => 5,
-            'user_id' => 2,
-        ]);
-        $todolist = new \App\Todolist([
-            'name' => 'Task Name ' . Str::random(10),
-            'description' => 'Task Description ' . Str::random(5),
-            'order' => 6,
-            'user_id' => 2,
+            'order' => $order,
+            'user_id' => $user_id,
         ]);
         $todolist->save();
     }

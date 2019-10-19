@@ -12,53 +12,63 @@ class TasksTableSeeder extends Seeder
      */
     public function run()
     {
-        $task = new \App\Task([
-            'name' => 'Task Name ' . Str::random(10),
-            'description' => 'Task Description ' . Str::random(5),
-            'state_id' => 1,
-            'step_id' => 1,
-            'order_in_steplist' => 1,
-            'user_id' => '1'
-        ]);
-        $task->save();
+        // User Id, Step id, Order in step list, State Id
+        $taskData = [
+            [1, 1, 1, 1],
+            [1, 1, 2, 1],
+            [1, 1, 3, 1],
+            [1, 1, 4, 1],
+            [1, 1, 5, 1],
+            [1, 2, 1, 1],
+            [1, 2, 2, 1],
+            [1, 2, 3, 1],
+            [1, 2, 4, 1],
+            [1, 2, 5, 1],
+            [1, 1, 1, 1],
+            [1, 1, 2, 1],
+            [1, 1, 3, 1],
+            [1, 1, 4, 1],
+            [1, 1, 5, 1],
+            [1, 2, 1, 1],
+            [1, 2, 2, 1],
+            [1, 2, 3, 1],
+            [1, 2, 4, 1],
+            [2, 6, 1, 1],
+            [2, 6, 2, 1],
+            [2, 6, 3, 1],
+            [2, 6, 4, 1],
+            [2, 6, 5, 1],
+            [2, 7, 1, 1],
+            [2, 7, 2, 1],
+            [2, 7, 3, 1],
+            [2, 7, 4, 1],
+            [2, 7, 5, 1],
+            [2, 6, 1, 1],
+            [2, 6, 2, 1],
+            [2, 6, 3, 1],
+            [2, 6, 4, 1],
+            [2, 6, 5, 1],
+            [2, 7, 1, 1],
+            [2, 7, 2, 1],
+            [2, 7, 3, 1],
+            [2, 7, 4, 1],
+            [2, 7, 5, 1],
+        ];
 
-        $task = new \App\Task([
-            'name' => 'Task Name ' . Str::random(10),
-            'description' => 'Task Description ' . Str::random(5),
-            'state_id' => 2,
-            'step_id' => 1,
-            'order_in_steplist' => 2,
-            'user_id' => '1'
-        ]);
-        $task->save();
+        foreach ($taskData as $datum) {
+            $this->createTaskItem($datum[0], $datum[1], $datum[2], $datum[3]);
+        }
 
-        $task = new \App\Task([
-            'name' => 'Task Name ' . Str::random(10),
-            'description' => 'Task Description ' . Str::random(5),
-            'state_id' => 3,
-            'step_id' => 1,
-            'order_in_steplist' => 3,
-            'user_id' => '1'
-        ]);
-        $task->save();
+    }
 
+    private function createTaskItem($userId, $stepId, $orderInStep, $stateId) {
         $task = new \App\Task([
             'name' => 'Task Name ' . Str::random(10),
             'description' => 'Task Description ' . Str::random(5),
-            'state_id' => 4,
-            'step_id' => 4,
-            'order_in_steplist' => 4,
-            'user_id' => '1'
-        ]);
-        $task->save();
-
-        $task = new \App\Task([
-            'name' => 'Task Name ' . Str::random(10),
-            'description' => 'Task Description ' . Str::random(5),
-            'state_id' => 5,
-            'step_id' => 5,
-            'order_in_steplist' => 5,
-            'user_id' => '1'
+            'state_id' => $stateId,
+            'step_id' => $stepId,
+            'order_in_steplist' => $orderInStep,
+            'user_id' => $userId
         ]);
         $task->save();
     }
