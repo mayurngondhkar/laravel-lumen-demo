@@ -60,6 +60,12 @@ class ToDoListController extends Controller
             'description' => 'required|min:5|max:255'
         ]);
 
+        try {
+            $lastOrderedTodoList = Todolist::max('order');
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
+        }
+
         $lastOrderedTodoList = Todolist::max('order');
 
         $toDoList = new Todolist([

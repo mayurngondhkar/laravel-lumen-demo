@@ -77,7 +77,11 @@ class StepController extends Controller
         ]);
 
 
-        $lastStep = Step::query()->where('todolist_id', $toDoListId)->max('order_in_todolist');
+        try {
+            $lastStep = Step::query()->where('todolist_id', $toDoListId)->max('order_in_todolist');
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
+        }
 
         $step = new Step([
             'name' => $request->input('name'),

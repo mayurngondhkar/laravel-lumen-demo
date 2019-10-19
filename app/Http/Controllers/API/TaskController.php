@@ -84,7 +84,11 @@ class TaskController extends Controller
             'description' => 'required|min:5|max:255'
         ]);
 
-        $lastTask = Task::query()->where('step_id', $stepId)->max('order_in_steplist');
+        try {
+            $lastTask = Task::query()->where('step_id', $stepId)->max('order_in_steplist');
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Something Went Wrong!'], 500);
+        }
 
         $task = new Task([
             'name' => $request->input('name'),
