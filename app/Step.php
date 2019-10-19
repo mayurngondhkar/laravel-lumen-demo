@@ -21,4 +21,13 @@ class Step extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleted(function($step) {
+            $step->tasks()->delete();
+        });
+    }
 }

@@ -243,7 +243,7 @@ class ToDoListController extends Controller
         }
 
         // Delete all steps for the task
-        if(!(new StepController)->destroyStepsOfToDoList($id)) {
+        if(!(new StepController)->destroyStepsAndTasksOfToDoList($id)) {
             return response()->json(['error' => 'Something went wrong'], 500);
         }
 

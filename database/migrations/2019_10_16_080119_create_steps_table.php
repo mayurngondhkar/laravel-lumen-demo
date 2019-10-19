@@ -22,6 +22,8 @@ class CreateStepsTable extends Migration
             $table->integer('user_id');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('todolist_id')->references('id')->on('todolists')->onDelete('cascade');
         });
     }
 

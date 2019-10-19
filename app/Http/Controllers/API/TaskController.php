@@ -291,15 +291,4 @@ class TaskController extends Controller
 
         return response()->json($taskInfo);
     }
-
-    public function destroyTasksOfStep($step_id) {
-        echo 'In destroy task. Step Id = ' . $step_id;
-        try {
-            Task::query()->where('step_id', $step_id)->delete();
-        } catch (\Exception $e) {
-            // Log exception
-            return false;
-        }
-        return true;
-    }
 }

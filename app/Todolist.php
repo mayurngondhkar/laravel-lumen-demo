@@ -17,4 +17,13 @@ class Todolist extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleted(function ($todolist) {
+            $todolist->steps()->delete();
+        });
+    }
 }

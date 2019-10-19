@@ -271,11 +271,6 @@ class StepController extends Controller
             return response()->json(['error' => 'Not Authorised'], 401);
         }
 
-        // Delete all tasks that belong to the step
-        if(!(new TaskController)->destroyTasksOfStep($id)) {
-            return response()->json(['error' => 'Something went wrong'], 500);
-        }
-
         try {
             $step->delete();
         } catch (\Exception $e) {
@@ -308,12 +303,12 @@ class StepController extends Controller
         }
     }
 
-    public function destroyStepsOfToDoList($toDoListId) {
+    public function destroyStepsAndTasksOfToDoList($toDoListId) {
 
         // Delete all tasks that belong to steps that belong to a todolist
         $step_ids =  Step::query()->select('id')->where('todolist_id', $toDoListId)->get();
         foreach ($step_ids as $step_id) {
-            if(!(new TaskController)->destroyTasksOfStep($step_id['id'])) {
+              if(!$this->destroy($toDoListId, $step_id['id'])) {
                 return false;
             }
         }

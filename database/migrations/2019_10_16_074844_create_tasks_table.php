@@ -23,6 +23,8 @@ class CreateTasksTable extends Migration
             $table->integer('order_in_steplist');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('step_id')->references('id')->on('steps')->onDelete('cascade');
         });
     }
 
